@@ -134,6 +134,15 @@ footer p.fine{color:#D9CBC7;font-size:13px;max-width:52ch;margin:14px 0 0}
 .chip[aria-pressed=true]{border-color:var(--rosa);background:var(--rosaclaro)}
 .chip:disabled{opacity:.35;cursor:not-allowed}
 .hint{font-size:13px;color:var(--canela);margin:6px 0 0}
+.dist{margin-top:10px;background:var(--rosaclaro);border-radius:var(--raioP);padding:6px 12px}
+.dist:empty{display:none}
+.dist .ln{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0;font-size:14px;font-weight:600}
+.dist .step{background:var(--branco)}
+.dist .step button{width:36px;height:36px}
+.dist .step button:disabled{opacity:.3;cursor:not-allowed}
+.dist .st{font-size:13px;font-weight:700;padding:6px 0 2px;color:var(--canela)}
+.dist .st.ok{color:#1F7A4D}
+.dist .st.falta{color:var(--rosa)}
 
 label.f{display:block;font-size:14px;font-weight:800;margin:0 0 12px}
 label.f input{display:block;width:100%;margin-top:5px;padding:13px 14px;border:2px solid var(--rosaclaro);border-radius:var(--raioP);background:var(--branco);color:var(--chocolate);font-size:16px;font-weight:500}
@@ -253,8 +262,8 @@ label.f input:focus{border-color:var(--azul);outline:none}
     <h2 id="kitTitle">Kit</h2>
     <p class="sub" id="kitSub"></p>
     <div class="grp"><h4>Sabor do bolo <span id="cntBolo"></span></h4><div class="chips" id="optBolo"></div></div>
-    <div class="grp"><h4>Salgados <span id="cntSal"></span></h4><div class="chips" id="optSal"></div><p class="hint" id="splitSal"></p></div>
-    <div class="grp"><h4>Doces <span id="cntDoc"></span></h4><div class="chips" id="optDoc"></div><p class="hint" id="splitDoc"></p></div>
+    <div class="grp"><h4>Salgados <span id="cntSal"></span></h4><div class="chips" id="optSal"></div><div class="dist" id="splitSal"></div></div>
+    <div class="grp"><h4>Doces <span id="cntDoc"></span></h4><div class="chips" id="optDoc"></div><div class="dist" id="splitDoc"></div></div>
     <button class="btn btn-block" style="background:var(--rosa);color:#fff" id="addKit" disabled>Adicionar ao pedido</button>
   </div>
 </div>
@@ -361,6 +370,8 @@ const store = {
 };
 const maxOp = (qtd,listado)=>Math.max(1,Math.min(listado,Math.floor(qtd/CONFIG.MIN_POR_SABOR)));
 function dividir(qtd,n){const b=Math.floor(qtd/n),r=qtd%n;return Array.from({length:n},(_,i)=>b+(i<r?1:0))}
+function dividir5(qtd,n){const p=CONFIG.PASSO,b=Math.floor(qtd/n/p)*p;let r=qtd-b*n;return Array.from({length:n},()=>{let v=b;if(r>0){v+=p;r-=p}return v})}
+const soma=a=>a.reduce((s,x)=>s+x,0);
 function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800)}
 
 /* ===== Rastreamento ===== */
@@ -397,7 +408,7 @@ const save = ()=>{store.set("dd_cart",cart);renderBar()};
 function linhas(){
   const out=[];
   cart.kits.forEach((k,i)=>{const K=byId(KITS,k.kit);
-    const ds=dividir(K.sal,k.sal.length), dd=dividir(K.doc,k.doc.length);
+    const ds=k.salQ||dividir(K.sal,k.sal.length), dd=k.docQ||dividir(K.doc,k.doc.length);
     out.push({tipo:"kit",idx:i,nome:"Kit "+K.nome,valor:K.preco,
       det:"Bolo "+byId(BOLOS,k.bolo).nome+" ("+String(K.kg).replace(".",",")+" kg). Salgados: "+k.sal.map((s,j)=>byId(SALGADOS,s).nome+" ("+ds[j]+")").join(", ")+". Doces: "+k.doc.map((s,j)=>byId(DOCES,s).nome+" ("+dd[j]+")").join(", ")+"."});
   });
@@ -473,7 +484,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){const o=document.qu
 /* ===== Montar kit ===== */
 let tmp=null;
 function openKit(id){
-  const K=byId(KITS,id); tmp={kit:id,bolo:null,sal:[],doc:[]};
+  const K=byId(KITS,id); tmp={kit:id,bolo:null,sal:[],doc:[],salQ:[],docQ:[]};
   $("#kitTitle").textContent="Kit "+K.nome;
   $("#kitSub").textContent=`${String(K.kg).replace(".",",")} kg de bolo, ${K.sal} salgados e ${K.doc} doces. ${brl(K.preco)}`;
   renderKitOpts(); openOv("#kitOv");
@@ -490,23 +501,40 @@ function renderKitOpts(){
   $("#cntBolo").textContent=tmp.bolo?"1 de 1":"escolha 1";
   $("#cntSal").textContent=`${tmp.sal.length} de ${mS}`;
   $("#cntDoc").textContent=`${tmp.doc.length} de ${mD}`;
-  const ds=tmp.sal.length?dividir(K.sal,tmp.sal.length):[], dd=tmp.doc.length?dividir(K.doc,tmp.doc.length):[];
-  $("#splitSal").textContent=tmp.sal.length?"Divisão: "+tmp.sal.map((s,i)=>byId(SALGADOS,s).nome+" "+ds[i]).join(", "):"";
-  $("#splitDoc").textContent=tmp.doc.length?"Divisão: "+tmp.doc.map((s,i)=>byId(DOCES,s).nome+" "+dd[i]).join(", "):"";
-  $("#addKit").disabled=!(tmp.bolo&&tmp.sal.length&&tmp.doc.length);
+  $("#splitSal").innerHTML=distHTML("sal",SALGADOS,K.sal);
+  $("#splitDoc").innerHTML=distHTML("doc",DOCES,K.doc);
+  const okSal=tmp.sal.length&&soma(tmp.salQ)===K.sal, okDoc=tmp.doc.length&&soma(tmp.docQ)===K.doc;
+  $("#addKit").disabled=!(tmp.bolo&&okSal&&okDoc);
+}
+function distHTML(g,list,total){
+  const ids=tmp[g], q=tmp[g+"Q"]; if(!ids.length) return "";
+  const falta=total-soma(q), min=CONFIG.MIN_POR_SABOR, p=CONFIG.PASSO;
+  let h="";
+  if(ids.length>1){
+    h+=ids.map((id,i)=>`<div class="ln"><span>${byId(list,id).nome}</span><span class="step"><button type="button" data-q="${g}:${i}:-1" aria-label="Diminuir ${byId(list,id).nome}" ${q[i]-p<min?"disabled":""}>−</button><output>${q[i]}</output><button type="button" data-q="${g}:${i}:1" aria-label="Aumentar ${byId(list,id).nome}" ${falta<p?"disabled":""}>+</button></span></div>`).join("");
+    h+= falta===0 ? `<p class="st ok">Total de ${total} distribuído. Mínimo de ${min} por sabor.</p>`
+                  : `<p class="st falta">Faltam ${falta} para completar ${total}. Use o + em algum sabor.</p>`;
+  }else{
+    h+=`<div class="ln"><span>${byId(list,ids[0]).nome}</span><span>${q[0]} unidades</span></div>`;
+  }
+  return h;
 }
 $("#kitOv").addEventListener("click",e=>{
+  const qb=e.target.closest("[data-q]");
+  if(qb&&!qb.disabled){const [g,i,d]=qb.dataset.q.split(":");const K=byId(KITS,tmp.kit),total=g==="sal"?K.sal:K.doc,q=tmp[g+"Q"],p=CONFIG.PASSO;
+    const nv=q[+i]+(+d)*p; if(nv>=CONFIG.MIN_POR_SABOR&&soma(q)-q[+i]+nv<=total){q[+i]=nv;renderKitOpts();} return;}
   const c=e.target.closest("[data-pick]"); if(!c||c.disabled)return;
   const [g,id]=c.dataset.pick.split(":"); const K=byId(KITS,tmp.kit);
   if(g==="bolo") tmp.bolo=id;
   else{const arr=tmp[g], max=g==="sal"?maxOp(K.sal,K.opSal):maxOp(K.doc,K.opDoc);
     if(arr.includes(id)) arr.splice(arr.indexOf(id),1);
-    else if(max===1){arr.length=0;arr.push(id)} else if(arr.length<max) arr.push(id);}
+    else if(max===1){arr.length=0;arr.push(id)} else if(arr.length<max) arr.push(id);
+    tmp[g+"Q"]=arr.length?dividir5(g==="sal"?K.sal:K.doc,arr.length):[];}
   renderKitOpts();
 });
 $("#addKit").onclick=()=>{
-  cart.kits.push({kit:tmp.kit,bolo:tmp.bolo,sal:[...tmp.sal],doc:[...tmp.doc]});
-  save(); track("kit_montado",{kit:tmp.kit,bolo:tmp.bolo,salgados:tmp.sal.join("|"),doces:tmp.doc.join("|")});
+  cart.kits.push({kit:tmp.kit,bolo:tmp.bolo,sal:[...tmp.sal],doc:[...tmp.doc],salQ:[...tmp.salQ],docQ:[...tmp.docQ]});
+  save(); track("kit_montado",{kit:tmp.kit,bolo:tmp.bolo,salgados:tmp.sal.map((s,i)=>s+" "+tmp.salQ[i]).join("|"),doces:tmp.doc.map((s,i)=>s+" "+tmp.docQ[i]).join("|")});
   closeOv($("#kitOv")); toast("Kit adicionado ao pedido");
 };
 
