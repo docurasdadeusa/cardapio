@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lista VIP de Natal | Doçuras da Deusa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens da identidade (ajuste com os valores do index-final.html) ===== */
+:root{
+  --rosa:#EE8FB0;
+  --rosa-claro:#FDEEF3;
+  --azul:#6FAEDB;
+  --azul-claro:#E6F2FB;
+  --chocolate:#4A2C24;
+  --chocolate-suave:#7A5A50;
+  --dourado:#C9A24B;
+  --branco:#FFFFFF;
+  --fonte-titulo:'Fredoka', 'Nunito', system-ui, sans-serif;
+  --fonte-texto:'Nunito', system-ui, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--rosa-claro);color:var(--chocolate);font-family:var(--fonte-texto);font-size:17px;line-height:1.55}
+img,svg{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--azul);outline-offset:3px;border-radius:6px}
+
+.wrap{max-width:560px;margin:0 auto;padding:0 22px}
+
+/* ===== Topo ===== */
+.marca{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.marca strong{font-family:var(--fonte-titulo);font-weight:600;font-size:1.15rem}
+.marca span{font-size:.85rem;color:var(--chocolate-suave)}
+
+/* ===== Hero ===== */
+.hero{text-align:center;padding:8px 0 36px}
+.bolo{width:230px;margin:0 auto 18px;display:block}
+.selo{display:inline-block;background:var(--azul-claro);color:var(--chocolate);font-weight:700;font-size:.85rem;padding:5px 14px;border-radius:999px;margin-bottom:12px}
+h1{font-family:var(--fonte-titulo);font-weight:700;font-size:clamp(2rem,8vw,2.7rem);line-height:1.08;margin:0 0 14px;letter-spacing:-.01em}
+.hero p{margin:0 auto 24px;max-width:30ch;color:var(--chocolate-suave)}
+.btn{display:inline-block;border:0;cursor:pointer;background:var(--chocolate);color:var(--branco);font-family:var(--fonte-titulo);font-weight:600;font-size:1.1rem;padding:15px 30px;border-radius:999px;text-decoration:none}
+.btn:hover{background:#5d3a30}
+.btn:disabled{opacity:.6;cursor:wait}
+.contagem{margin-top:16px;font-size:.9rem;color:var(--chocolate-suave)}
+
+/* ===== Vantagens ===== */
+.vantagens{background:var(--branco);border-radius:28px 28px 0 0;padding:34px 0 10px}
+h2{font-family:var(--fonte-titulo);font-weight:600;font-size:1.5rem;margin:0 0 18px;line-height:1.2}
+.lista-vantagens{list-style:none;margin:0 0 30px;padding:0;display:grid;gap:14px}
+.lista-vantagens li{display:flex;gap:14px;align-items:flex-start}
+.ico{flex:0 0 44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--rosa-claro)}
+.lista-vantagens li:nth-child(2) .ico{background:var(--azul-claro)}
+.lista-vantagens b{display:block;font-size:1.02rem}
+.lista-vantagens small{font-size:.92rem;color:var(--chocolate-suave)}
+
+/* Linha do tempo (é uma sequência real, por isso os marcadores) */
+.tempo{list-style:none;margin:0 0 30px;padding:0 0 0 18px;border-left:3px dotted var(--rosa)}
+.tempo li{position:relative;margin-bottom:14px}
+.tempo li::before{content:"";position:absolute;left:-26px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--dourado)}
+.tempo b{font-family:var(--fonte-titulo);font-weight:600}
+
+.teaser{background:var(--azul-claro);border-radius:18px;padding:18px 20px;margin-bottom:34px;font-size:.98rem}
+
+/* ===== Formulário ===== */
+.form-bloco{background:var(--branco);padding:0 0 40px}
+form{display:grid;gap:16px}
+label{font-weight:700;font-size:.95rem;display:block;margin-bottom:6px}
+input[type=text],input[type=tel],input[type=email]{width:100%;font:inherit;color:var(--chocolate);padding:13px 15px;border:2px solid #F3C9D8;border-radius:14px;background:var(--branco)}
+input:focus{border-color:var(--azul);outline:none}
+fieldset{border:0;margin:0;padding:0}
+legend{font-weight:700;font-size:.95rem;margin-bottom:8px}
+.opcoes{display:flex;flex-wrap:wrap;gap:8px}
+.opcoes label{margin:0;font-weight:600;font-size:.92rem;cursor:pointer}
+.opcoes input{position:absolute;opacity:0}
+.opcoes span{display:inline-block;padding:99px 14px;border-radius:999px;border:2px solid #F3C9D8;background:var(--branco)}
+.opcoes input:checked + span{background:var(--rosa);border-color:var(--rosa);color:var(--branco)}
+.opcoes input:focus-visible + span{outline:3px solid var(--azul);outline-offset:2px}
+.aceite{display:flex;gap:10px;align-items:flex-start;font-weight:400;font-size:.88rem;color:var(--chocolate-suave)}
+.aceite input{margin-top:4px;width:18px;height:18px;accent-color:var(--chocolate)}
+.erro{color:#B3261E;font-size:.88rem;min-height:1.2em;margin:0}
+.btn-form{width:100%}
+
+/* Estados */
+.estado{display:none;text-align:center;padding:30px 22px;border-radius:22px;background:var(--rosa-claro)}
+.estado h2{margin-bottom:10px}
+.estado .btn{margin-top:14px}
+
+/* ===== Rodapé ===== */
+footer{text-align:center;padding:28px 0 36px;font-size:.9rem;color:var(--chocolate-suave)}
+footer p{margin:4px 0}
+footer .slogan{font-family:var(--fonte-titulo);font-size:1.1rem;color:var(--chocolate)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="marca">
+    <strong>Doçuras da Deusa</strong>
+    <span>Natal 2026</span>
+  </header>
+
+  <section class="hero">
+    <!-- Ilustração flat: bolo em chantininho com coroa natalina e pérolas douradas -->
+    <svg class="bolo" viewBox="0 0 240 200" role="img" aria-label="Bolo natalino com coroa verde e pérolas douradas">
+      <ellipse cx="120" cy="182" rx="100" ry="12" fill="#F3C9D8"/>
+      <rect x="44" y="80" width="152" height="96" rx="18" fill="#FFFFFF"/>
+      <path d="M44 150 q19 12 38 0 t38 0 t38 0 t38 0 v8 a18 18 0 0 1 -18 18 h-116 a18 18 0 0 1 -18 -18z" fill="#F7D6E2"/>
+      <ellipse cx="120" cy="80" rx="76" ry="20" fill="#FFFFFF"/>
+      <g fill="#5E9C6E">
+        <circle cx="52" cy="78" r="11"/><circle cx="68" cy="68" r="11"/><circle cx="88" cy="62" r="11"/>
+        <circle cx="110" cy="60" r="11"/><circle cx="132" cy="60" r="11"/><circle cx="154" cy="63" r="11"/>
+        <circle cx="173" cy="69" r="11"/><circle cx="188" cy="79" r="11"/><circle cx="70" cy="90" r="11"/>
+        <circle cx="96" cy="97" r="11"/><circle cx="124" cy="99" r="11"/><circle cx="152" cy="96" r="11"/><circle cx="174" cy="90" r="11"/>
+      </g>
+      <g fill="#C9A24B">
+        <circle cx="60" cy="72" r="3.5"/><circle cx="98" cy="58" r="3.5"/><circle cx="143" cy="57" r="3.5"/>
+        <circle cx="181" cy="74" r="3.5"/><circle cx="84" cy="96" r="3.5"/><circle cx="138" cy="101" r="3.5"/><circle cx="165" cy="92" r="3.5"/>
+      </g>
+      <path d="M112 50 q-14 -14 -2 -18 q8 -2 10 12 q2 -14 10 -12 q12 4 -2 18z" fill="#EE8FB0"/>
+      <circle cx="120" cy="46" r="4" fill="#D9749A"/>
+    </svg>
+
+    <span class="selo">Lista VIP aberta até 15/10</span>
+    <h1>Seu Natal começa antes de todo mundo</h1>
+    <p>Entre na lista VIP e receba nosso cardápio de Natal primeiro, com vantagens que só a lista tem.</p>
+    <a class="btn" href="#cadastro">Quero entrar na lista</a>
+    <p class="contagem" id="contagem" aria-live="polite"></p>
+  </section>
+</div>
+
+<section class="vantagens">
+  <div class="wrap">
+    <h2>O que você ganha na lista</h2>
+    <ul class="lista-vantagens">
+      <li>
+        <div class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A2C24" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <div><b>Cardápio antes de todo mundo</b><small>Você recebe tudo no WhatsApp em 19/10, uma semana antes da abertura geral.</small></div>
+      </li>
+      <li>
+        <div class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A2C24" stroke-width="2" stroke-linecap="round"><path d="M20 12l-8 8-8-8V4h8z"/><circle cx="8" cy="8" r="1.5" fill="#4A2C24"/></svg>
+        </div>
+        <div><b>10% OFF nos itens avulsos</b><small>Válido nas reservas feitas de 19 a 23/10.</small></div>
+      </li>
+      <li>
+        <div class="ico" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A2C24" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>
+        </div>
+        <div><b>Você escolhe o horário de retirada primeiro</b><small>As vagas por horário são limitadas e a lista VIP escolhe antes.</small></div>
+      </li>
+    </ul>
+
+    <h2>Como funciona</h2>
+    <ol class="tempo">
+      <li><b>Até 15/10</b><br>Faça seu cadastro na lista.</li>
+      <li><b>19/10</b><br>O cardápio chega no seu WhatsApp.</li>
+      <li><b>19 a 23/10</b><br>Pré reserva com desconto e prioridade de horário.</li>
+    </ol>
+
+    <div class="teaser">
+      <b>Vem aí:</b> empadões de frango com cream cheese, bacalhau e camarão, escondidinho de carne de sol, pavês, bolos natalinos e presentes feitos com carinho.
+    </div>
+  </div>
+</section>
+
+<section class="form-bloco" id="cadastro">
+  <div class="wrap">
+    <h2>Entre na lista VIP</h2>
+
+    <form id="form-vip" novalidate>
+      <div>
+        <label for="nome">Seu nome</label>
+        <input type="text" id="nome" name="nome" autocomplete="given-name" required>
+      </div>
+      <div>
+        <label for="whatsapp">WhatsApp</label>
+        <input type="tel" id="whatsapp" name="whatsapp" inputmode="numeric" autocomplete="tel" placeholder="(81) 99999 9999" required>
+      </div>
+      <div>
+        <label for="email">Email (opcional)</label>
+        <input type="email" id="email" name="email" autocomplete="email">
+      </div>
+      <div>
+        <label for="bairro">Bairro</label>
+        <input type="text" id="bairro" name="bairro" autocomplete="address-level3" required>
+      </div>
+      <fieldset>
+        <legend>O que você quer para o Natal?</legend>
+        <div class="opcoes">
+          <label><input type="checkbox" name="interesse" value="Ceia completa"><span>Ceia completa</span></label>
+          <label><input type="checkbox" name="interesse" value="Empadões e pratos"><span>Empadões e pratos</span></label>
+          <label><input type="checkbox" name="interesse" value="Sobremesas"><span>Sobremesas</span></label>
+          <label><input type="checkbox" name="interesse" value="Bolos natalinos"><span>Bolos natalinos</span></label>
+          <label><input type="checkbox" name="interesse" value="Presentes"><span>Presentes</span></label>
+        </div>
+      </fieldset>
+      <label class="aceite">
+        <input type="checkbox" id="aceite" name="aceite" required>
+        Aceito receber mensagens da Doçuras da Deusa pelo WhatsApp e por email sobre o cardápio de Natal e novidades. Posso sair da lista quando quiser.
+      </label>
+      <p class="erro" id="erro" role="alert"></p>
+      <button class="btn btn-form" type="submit" id="btn-enviar">Entrar na lista VIP</button>
+    </form>
+
+    <div class="estado" id="sucesso" aria-live="polite">
+      <h2 id="sucesso-titulo">Você está na lista!</h2>
+      <p>Em 19/10 o cardápio de Natal chega primeiro para você no WhatsApp. Enquanto isso, acompanhe as novidades no Instagram.</p>
+      <a class="btn" href="https://instagram.com/docurasdadeusaa" target="_blank" rel="noopener">Seguir no Instagram</a>
+    </div>
+
+    <div class="estado" id="encerrado">
+      <h2>A lista VIP encerrou</h2>
+      <p>O cadastro terminou em 15/10. O cardápio de Natal abre para todos em 26/10.</p>
+      <a class="btn" href="https://wa.me/5581996055239" target="_blank" rel="noopener">Falar no WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="slogan">Carinho que vira sabor</p>
+    <p><a href="https://instagram.com/docurasdadeusaa" target="_blank" rel="noopener">@docurasdadeusaa</a></p>
+    <p><a href="https://wa.me/5581996055239" target="_blank" rel="noopener">(81) 99605 5239</a></p>
+  </div>
+</footer>
+
+<script>
+/* ===== Configuração ===== */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7NHeaVV3KE6wzkZyn4YMM6sRSbpyC4vzq4wjVAdB214ZkET_-OCzyzsPd43-bdccL/exec"; // cole aqui a URL do Web App do Apps Script
+const FIM_LISTA = new Date("2026-10-15T23:59:59-03:00");
+const LANCAMENTO = new Date("2026-10-19T09:00:00-03:00");
+
+/* Origem do acesso (utm) e flag de teste (?teste=1 fica fora das métricas) */
+const params = new URLSearchParams(location.search);
+const origem = {
+  utm_source: params.get("utm_source") || "",
+  utm_medium: params.get("utm_medium") || "",
+  utm_campaign: params.get("utm_campaign") || "",
+  teste: params.get("teste") === "1" ? "1" : "0"
+};
+
+const form = document.getElementById("form-vip");
+const erro = document.getElementById("erro");
+const btn = document.getElementById("btn-enviar");
+
+/* Lista encerrada */
+if (new Date() > FIM_LISTA) {
+  form.style.display = "none";
+  document.getElementById("encerrado").style.display = "block";
+  document.querySelector(".selo").textContent = "Lista VIP encerrada";
+}
+
+/* Contagem até o lançamento */
+function atualizarContagem(){
+  const dias = Math.ceil((LANCAMENTO - new Date()) / 86400000);
+  const el = document.getElementById("contagem");
+  if (dias > 1) el.textContent = `Faltam ${dias} dias para o cardápio chegar na lista VIP.`;
+  else if (dias === 1) el.textContent = "Falta 1 dia para o cardápio chegar na lista VIP.";
+  else el.textContent = "";
+}
+atualizarContagem();
+
+/* Máscara de WhatsApp: (81) 99999 9999 */
+const zap = document.getElementById("whatsapp");
+zap.addEventListener("input", () => {
+  let d = zap.value.replace(/\D/g, "").slice(0, 11);
+  let v = d;
+  if (d.length > 2) v = `(${d.slice(0,2)}) ${d.slice(2)}`;
+  if (d.length > 7) v = `(${d.slice(0,2)}) ${d.slice(2,7)} ${d.slice(7)}`;
+  zap.value = v;
+});
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  erro.textContent = "";
+  const nome = form.nome.value.trim();
+  const numero = zap.value.replace(/\D/g, "");
+  const email = form.email.value.trim();
+  const bairro = form.bairro.value.trim();
+
+  if (!nome) return mostrarErro("Preencha seu nome.", form.nome);
+  if (numero.length !== 11) return mostrarErro("Confira o WhatsApp: são 11 números com o DDD.", zap);
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return mostrarErro("Confira o email ou deixe o campo em branco.", form.email);
+  if (!bairro) return mostrarErro("Preencha seu bairro.", form.bairro);
+  if (!form.aceite.checked) return mostrarErro("Marque o aceite para receber o cardápio.", form.aceite);
+
+  const interesses = [...form.querySelectorAll('input[name="interesse"]:checked')].map(i => i.value).join(", ");
+  const dados = new URLSearchParams({
+    lista: "VIP Natal 2026",
+    nome, whatsapp: numero, email, bairro, interesses,
+    ...origem,
+    pagina: location.pathname
+  });
+
+  btn.disabled = true;
+  btn.textContent = "Enviando...";
+  try {
+    if (APPS_SCRIPT_URL) {
+      await fetch(APPS_SCRIPT_URL, { method: "POST", mode: "no-cors", body: dados });
+    } else {
+      console.log("Protótipo: dados que iriam para o Sheets", Object.fromEntries(dados));
+    }
+    form.style.display = "none";
+    document.getElementById("sucesso-titulo").textContent = `Pronto, ${nome.split(" ")[0]}! Você está na lista.`;
+    document.getElementById("sucesso").style.display = "block";
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = "Entrar na lista VIP";
+    mostrarErro("Não foi possível enviar agora. Verifique sua conexão e tente de novo.");
+  }
+});
+
+function mostrarErro(msg, campo){
+  erro.textContent = msg;
+  if (campo) campo.focus();
+}
+</script>
+</body>
+</html>
