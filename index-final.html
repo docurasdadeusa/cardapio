@@ -629,13 +629,17 @@ if(qs.get("utm_source")||!origem){
   origem = {utm_source:qs.get("utm_source")||"",utm_medium:qs.get("utm_medium")||"",utm_campaign:qs.get("utm_campaign")||"",referrer:document.referrer||""};
   store.set("dd_origem",origem);
 }
+/* Acessos da equipe: abra uma vez com ?interno=1 (ou ?interno=0 para desfazer) em cada navegador */
+if(qs.get("interno")==="1") store.set("dd_interno",true);
+if(qs.get("interno")==="0") store.del("dd_interno");
+const interno = !!store.get("dd_interno");
 const demoLog = [];
 function track(evento,dados={}){
   const payload = Object.assign({
     evento, ts:new Date().toISOString(), session_id:sid, lead_id:lead?lead.id:"",
     dispositivo:/Mobi|Android|iPhone/i.test(navigator.userAgent)?"mobile":"desktop",
     pagina:location.pathname
-  }, origem, dados);
+  }, origem, dados, interno?{interno:true}:{});
   if(CONFIG.ENDPOINT){
     fetch(CONFIG.ENDPOINT,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).catch(()=>{});
   }else{
@@ -1079,6 +1083,7 @@ links.forEach(a=>a.addEventListener("click",()=>track("secao_clique",{secao:a.ge
 renderAll();
 {const cp=new URLSearchParams(location.search).get("cupom"); if(cp) aplicarCupom(cp,true); else if(cupom) buscarCupom(cupom.codigo).then(r=>{if(r.cupom){cupom=r.cupom;store.set("dd_cupom",cupom)}else if(!/validar/.test(r.erro||"")){cupom=null;store.del("dd_cupom")} renderBar();});}
 carregarPromo();
+if(qs.has("interno")) setTimeout(()=>toast(interno?"Modo interno ligado: seus acessos não entram no painel":"Modo interno desligado"),600);
 track("acesso",{retorno:!!store.get("dd_visitou")});
 store.set("dd_visitou",true);
 </script>
