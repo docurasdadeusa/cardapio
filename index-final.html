@@ -292,6 +292,11 @@ label.f select:focus{border-color:var(--azul);outline:none}
 .promos.um .promo{flex-basis:100%;max-width:none}
 .promo.rosa{background:var(--rosa);color:var(--branco)}
 .promo.azul{background:var(--azul)}
+.promo.natal{background:#5A7340;color:var(--branco);text-decoration:none}
+.promo.natal .xadrez{background-image:linear-gradient(90deg,var(--rosaclaro) 50%,#7E9466 50%)}
+.promo.natal .arv{position:absolute;right:18px;top:26px;width:46px;height:auto}
+.promo.natal .tit,.promo.natal .txt{padding-right:60px}
+.promo.natal .btn-natal{background:var(--branco);color:var(--chocolate);border-radius:999px;font-weight:800;font-size:14px;padding:10px 16px;white-space:nowrap}
 .promo .xadrez{position:absolute;left:0;right:0;top:0;height:14px;background-size:28px 14px}
 .promo.rosa .xadrez{background-image:linear-gradient(90deg,var(--azul) 50%,var(--azulclaro) 50%)}
 .promo.azul .xadrez{background-image:linear-gradient(90deg,var(--rosa) 50%,var(--rosaclaro) 50%)}
@@ -795,7 +800,13 @@ if(cupom&&cupom.fim&&cupom.fim<hojeISO()){cupom=null;store.del("dd_cupom")}
 let promo = null;
 const BANNER_CACHE_H = 6;
 function tituloHTML(t){ return escapeHtml(t).replace(/ \*/g,"\u00a0*").replace(/\*([^*]+)\*/g,'<span class="tarja"><i class="a"></i>$1<i class="b"></i></span>'); }
+const VIP_NATAL={natal:true,link:"natal.html?utm_source=cardapio&utm_medium=banner&utm_campaign=lista_vip_natal",fim:new Date("2026-10-16T00:00:00-03:00")};
+const ARVORE='<svg class="arv" viewBox="0 0 64 74" aria-hidden="true"><path d="M32 0 52 22H12z" fill="#FBE3EC"/><path d="M32 18 64 58H0z" fill="#fff"/><circle cx="32" cy="23" r="3.6" fill="#C9A24A"/><circle cx="23" cy="40" r="3.6" fill="#C9A24A"/><circle cx="41" cy="46" r="3.6" fill="#C9A24A"/><rect x="26" y="58" width="12" height="16" rx="4" fill="#FBE3EC"/></svg>';
+function bannerNatalHTML(){
+  return `<a class="promo natal" href="${VIP_NATAL.link}" data-natal="1"><span class="xadrez"></span>${ARVORE}<span class="tit">Lista VIP de Natal</span><p class="txt">Receba o cardápio de Natal primeiro, com 10% OFF nos avulsos e horário garantido.</p><div class="rod"><small>Grátis, até 15/10</small><span class="btn-natal">Quero entrar</span></div></a>`;
+}
 function bannerHTML(b){
+  if(b.natal) return bannerNatalHTML();
   const cor=b.cor==="azul"?"azul":"rosa";
   let h=`<div class="promo ${cor}"><span class="xadrez"></span><span class="tit${/\*/.test(b.titulo||"")?" comtarja":""}">${tituloHTML(b.titulo||"")}</span>`;
   if(b.destaque){
@@ -808,7 +819,9 @@ function bannerHTML(b){
 }
 let banners=[], bannersKey=null;
 function renderBanners(lista){
-  const novo=lista||[], key=JSON.stringify(novo);
+  const novo=[...(lista||[])];
+  if(Date.now()<VIP_NATAL.fim) novo.splice(Math.min(2,novo.length),0,VIP_NATAL); /* 3ª posição: promoções que vendem vêm antes */
+  const key=JSON.stringify(novo);
   if(key===bannersKey) return;
   bannersKey=key; banners=novo;
   const box=$("#promos"), dots=$("#promoDots"), ref=dots.nextElementSibling, y0=ref.getBoundingClientRect().top;
@@ -827,6 +840,7 @@ $("#promos").addEventListener("scroll",e=>{
   [...$("#promoDots").children].forEach((d,k)=>d.classList.toggle("on",k===i));
 },{passive:true});
 $("#promos").addEventListener("click",async e=>{
+  if(e.target.closest("[data-natal]")){ track("banner_clique",{cupom:"LISTA_VIP_NATAL",destino:"natal.html"}); return; }
   const bt=e.target.closest("[data-banner]"); if(!bt) return;
   const b=banners.find(x=>x.codigo===bt.dataset.banner); if(!b) return;
   track("banner_clique",{cupom:b.codigo,destino:b.destino||""});
