@@ -1181,7 +1181,7 @@ function renderSum(){
   $("#who").innerHTML=`Orçamento para ${escapeHtml(lead.nome)}. <button type="button" id="troca">Não é você?</button>`;
   $("#troca").onclick=()=>{lead=null;store.del("dd_lead");$("#stepSum").hidden=true;$("#stepLead").hidden=false;$("#leadForm").reset()};
   $("#sumList").innerHTML=ls.length?ls.map(l=>`<li><div><b>${l.nome}</b><div class="d">${l.det}</div></div>
-    <div class="r">${brl(l.valor)}<br><button class="rm" data-rm="${l.tipo}:${l.tipo==="kit"?l.idx:l.id}">Remover</button></div></li>`).join("")
+    <div class="r">${brl(l.valor)}<br><button class="rm" data-rm="${l.tipo}:${encodeURIComponent(l.tipo==="kit"?l.idx:l.id)}">Remover</button></div></li>`).join("")
     :`<li><div>Seu pedido está vazio. Escolha um kit ou adicione itens do cardápio.</div></li>`;
   $("#sumTotal").textContent=brl(totalFinal());
   renderCupom();
@@ -1200,7 +1200,7 @@ function registrarSimulacao(){
 }
 $("#sumList").addEventListener("click",e=>{
   const r=e.target.closest("[data-rm]"); if(!r)return;
-  const [t,k]=r.dataset.rm.split(":");
+  const i=r.dataset.rm.indexOf(":"), t=r.dataset.rm.slice(0,i), k=decodeURIComponent(r.dataset.rm.slice(i+1));
   if(t==="kit") cart.kits.splice(+k,1); else delete cart[t][k];
   save(); renderAll(); renderSum();
 });
