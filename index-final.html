@@ -805,7 +805,12 @@ const ARVORE='<svg class="arv" viewBox="0 0 64 74" aria-hidden="true"><path d="M
 function bannerNatalHTML(){
   return `<a class="promo natal" href="${VIP_NATAL.link}" data-natal="1"><span class="xadrez"></span>${ARVORE}<span class="tit">Lista VIP de Natal</span><p class="txt">Receba o cardápio de Natal primeiro, com 10% OFF nos avulsos e horário garantido.</p><div class="rod"><small>Grátis, até 15/10</small><span class="btn-natal">Quero entrar</span></div></a>`;
 }
+const FESTAS={festas:true,link:"cardapio-festas.html?utm_source=cardapio&utm_medium=banner&utm_campaign=festas2026",fim:new Date("2026-12-31T00:00:00-03:00")};
+function bannerFestasHTML(){
+  return `<a class="promo natal" href="${FESTAS.link}" data-festas="1"><span class="xadrez"></span>${ARVORE}<span class="tit">Cardápio de festas</span><p class="txt">Ceia de fim de ano com combos a partir de R$ 159 e avulsos para completar a mesa.</p><div class="rod"><small>Retirada 23, 24, 30 e 31/12</small><span class="btn-natal">Ver cardápio</span></div></a>`;
+}
 function bannerHTML(b){
+  if(b.festas) return bannerFestasHTML();
   if(b.natal) return bannerNatalHTML();
   const cor=b.cor==="azul"?"azul":"rosa";
   let h=`<div class="promo ${cor}"><span class="xadrez"></span><span class="tit${/\*/.test(b.titulo||"")?" comtarja":""}">${tituloHTML(b.titulo||"")}</span>`;
@@ -821,6 +826,7 @@ let banners=[], bannersKey=null;
 function renderBanners(lista){
   const novo=[...(lista||[])];
   if(Date.now()<VIP_NATAL.fim) novo.splice(Math.min(2,novo.length),0,VIP_NATAL); /* 3ª posição: promoções que vendem vêm antes */
+  if(Date.now()<FESTAS.fim) novo.unshift(FESTAS); /* festas: primeira posição até 30/12 */
   const key=JSON.stringify(novo);
   if(key===bannersKey) return;
   bannersKey=key; banners=novo;
@@ -840,6 +846,7 @@ $("#promos").addEventListener("scroll",e=>{
   [...$("#promoDots").children].forEach((d,k)=>d.classList.toggle("on",k===i));
 },{passive:true});
 $("#promos").addEventListener("click",async e=>{
+  if(e.target.closest("[data-festas]")){ track("banner_clique",{cupom:"FESTAS_2026",destino:"cardapio-festas.html"}); return; }
   if(e.target.closest("[data-natal]")){ track("banner_clique",{cupom:"LISTA_VIP_NATAL",destino:"natal.html"}); return; }
   const bt=e.target.closest("[data-banner]"); if(!bt) return;
   const b=banners.find(x=>x.codigo===bt.dataset.banner); if(!b) return;
