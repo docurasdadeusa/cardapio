@@ -56,6 +56,7 @@ h1,h2,h3,p{margin:0}
 .vip .t{font-size:20px;line-height:26px;font-weight:800}
 .vip .s{font-size:14px;line-height:20px}
 .alerta{display:flex;gap:8px;align-items:center;background:var(--branco);border-radius:var(--raioP);padding:10px 12px;font-size:14px;line-height:20px;font-weight:700}
+.alerta[hidden]{display:none}
 .alerta::before{content:"";flex:none;width:10px;height:10px;border-radius:999px;background:var(--verde)}
 .vagas{background:var(--branco);border-radius:var(--raioM);padding:12px 16px;display:flex;flex-direction:column;gap:8px}
 .vagas .t{font-size:13px;font-weight:700}
@@ -165,7 +166,7 @@ footer .redes a{width:44px;height:44px;border-radius:999px;background:#fff;displ
 footer small{font-size:12px;font-weight:600}
 
 /* barra do pedido */
-.barra{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--chocolate);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px)) 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(110%);transition:transform .25s}
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--chocolate);color:#fff;padding:12px max(16px, calc(50% - 264px)) calc(12px + env(safe-area-inset-bottom,0px)) max(24px, calc(50% - 256px));display:flex;align-items:center;justify-content:space-between;gap:12px;transform:translateY(110%);transition:transform .25s}
 .barra.on{transform:none}
 .barra .q{font-size:13px;font-weight:600}
 .barra .v{font-size:20px;font-weight:800}
@@ -173,9 +174,9 @@ footer small{font-size:12px;font-weight:600}
 /* painel */
 .painel{position:fixed;inset:0;z-index:50;background:var(--rosaclaro);overflow-y:auto;transform:translateY(100%);transition:transform .28s;padding-top:env(safe-area-inset-top,0px)}
 .painel.on{transform:none}
-.painel .cab{position:sticky;top:0;z-index:2;background:var(--branco);display:flex;align-items:center;gap:12px;padding:12px 24px}
+.painel .cab{position:sticky;top:0;z-index:2;background:var(--branco);display:flex;align-items:center;gap:12px;padding:12px max(24px, calc(50% - 256px))}
 .painel .cab h2{font-size:20px;font-weight:400}
-.painel .conteudo{padding:20px 24px 160px;display:flex;flex-direction:column;gap:16px}
+.painel .conteudo{max-width:560px;margin:0 auto;padding:20px 24px 160px;display:flex;flex-direction:column;gap:16px}
 .cartao{background:var(--branco);border-radius:var(--raioG);padding:16px;display:flex;flex-direction:column;gap:12px}
 .cartao h3{font-size:20px;line-height:26px;font-weight:400}
 .linha{display:flex;gap:12px;align-items:center}
@@ -220,7 +221,7 @@ footer small{font-size:12px;font-weight:600}
 details{background:var(--branco);border-radius:var(--raioM);padding:14px 16px}
 summary{font-size:14px;font-weight:700;cursor:pointer}
 details p{margin-top:8px;font-size:13px;line-height:18px;color:var(--canela)}
-.envio{position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--chocolate);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:6px;transform:translateY(110%);transition:transform .28s}
+.envio{position:fixed;left:0;right:0;bottom:0;z-index:55;background:var(--chocolate);padding:12px max(16px, calc(50% - 264px)) calc(12px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:6px;transform:translateY(110%);transition:transform .28s}
 .envio.on{transform:none}
 .envio small{font-size:12px;font-weight:600;color:#fff;text-align:center}
 .envio .falta{color:#F7D3E0}
@@ -530,6 +531,7 @@ const precoTam = (id, r) => { const t = ITENS[id].tam.find(x => x.r === r); retu
 const NOMES_EVENTO = { visita:"festas_acesso", atalho_pessoas:"festas_atalho", add_avulso:"festas_item", add_combo:"festas_combo",
   montar_bolo:"festas_bolo_aberto", add_bolo:"festas_bolo", abrir_pedido:"festas_pedido_aberto", escolher_janela:"festas_janela", enviar_pedido:"festas_pedido" };
 const SESSAO = (() => { try { let id = sessionStorage.getItem("ddFestasSessao"); if (!id){ id = "f" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem("ddFestasSessao", id); } return id; } catch(e){ return "f" + Date.now().toString(36); } })();
+function balaoHTML(){ return esc(mensagem()).replace(/\*([^*\n]+)\*/g, "<b>$1</b>"); }
 function track(evento, dados){
   if (!CONFIG.ENDPOINT_EVENTOS) return;
   if (/(^|[?&])teste=1/.test(location.search)) return;
@@ -807,7 +809,7 @@ function renderPainel(){
     <div class="res total"><span>Total</span><span>${brl(t.total)}</span></div>
     <div class="sinal"><div class="res total"><span>Sinal agora (${Math.round(CONFIG.SINAL*100)}%)</span><span>${brl(t.sinal)}</span></div><div class="res"><span>Restante até ${CONFIG.SALDO_ATE}</span><span>${brl(t.saldo)}</span></div></div>`;
 
-  $("#balao").textContent = mensagem();
+  $("#balao").innerHTML = balaoHTML();
   const f = faltando();
   $("#envioTxt").textContent = f.length ? "Falta: " + f.join(", ") + "." : "O Pix do sinal vem na conversa, com a chave da loja.";
   $("#envioTxt").classList.toggle("falta", !!f.length);
@@ -912,7 +914,7 @@ $("#fechar").addEventListener("click", fechar);
 $("#continuar").addEventListener("click", fechar);
 $("#enviar").addEventListener("click", enviar);
 document.addEventListener("keydown", e => { if (e.key !== "Escape") return; if ($("#ovBolo").classList.contains("on")) return fecharBolo(); if (painelAberto()) fechar(); });
-["#nome","#whats","#bairro"].forEach(s => $(s).addEventListener("input", () => { $(s).parentElement.classList.remove("inval"); $("#balao").textContent = mensagem(); const f = faltando(); $("#envioTxt").textContent = f.length ? "Falta: " + f.join(", ") + "." : "O Pix do sinal vem na conversa, com a chave da loja."; $("#envioTxt").classList.toggle("falta", !!f.length); }));
+["#nome","#whats","#bairro"].forEach(s => $(s).addEventListener("input", () => { $(s).parentElement.classList.remove("inval"); $("#balao").innerHTML = balaoHTML(); const f = faltando(); $("#envioTxt").textContent = f.length ? "Falta: " + f.join(", ") + "." : "O Pix do sinal vem na conversa, com a chave da loja."; $("#envioTxt").classList.toggle("falta", !!f.length); }));
 $("#whats").addEventListener("input", e => {
   const d = e.target.value.replace(/\D/g,"").slice(0,11);
   e.target.value = d.length > 6 ? `(${d.slice(0,2)}) ${d.slice(2,3)} ${d.slice(3,7)} ${d.slice(7)}`.trim() : d.length > 2 ? `(${d.slice(0,2)}) ${d.slice(2)}` : d;
