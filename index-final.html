@@ -108,6 +108,16 @@ section{padding:48px 0 56px}
 .sec-title span{font-weight:400}
 .sec-note{color:var(--canela);max-width:44ch;margin:10px 0 24px}
 
+/* Kits compactos */
+.kitc{position:relative;background:var(--branco);border:2px solid var(--rosaclaro);border-radius:20px;padding:14px 16px 14px 22px;margin-bottom:10px;overflow:hidden}
+.kitc:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--azul)}
+.kitc.r:before{background:var(--rosa)}
+.kc-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.kc-top h3{margin:0;font-size:18px;font-weight:800;line-height:1.2}
+.kc-pes{margin:0;font-size:13px;font-weight:700;color:var(--rosa)}
+.kc-bot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px}
+.kc-itens{margin:0;font-size:14px;color:var(--canela);line-height:1.35}
+.kc-btn{padding:10px 18px;font-size:14px;flex:none}
 /* Kits */
 .kit{display:grid;grid-template-columns:136px 1fr;background:var(--branco);border:2px solid var(--rosaclaro);border-radius:var(--raioG);overflow:hidden;margin-bottom:14px}
 .kit-side{background:var(--azul);color:var(--chocolate);display:flex;flex-direction:column;justify-content:center;text-align:center;padding:16px 8px}
@@ -119,8 +129,8 @@ section{padding:48px 0 56px}
 .kit-body li b{color:var(--chocolate);font-weight:800}
 .kit-body .opt{font-size:13px;color:var(--canela)}
 .kit-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:4px}
-.price-pill{background:var(--rosa);color:var(--branco);font-weight:800;font-size:22px;border-radius:999px;padding:4px 16px;white-space:nowrap}
-.price-pill small{font-size:13px;font-weight:700;margin-right:3px}
+.price-pill{color:var(--chocolate);font-weight:800;font-size:20px;white-space:nowrap;letter-spacing:-.3px}
+.price-pill small{font-size:13px;font-weight:700;margin-right:2px}
 .btn{border:0;border-radius:999px;padding:12px 22px;font-weight:800;font-size:15px}
 .btn-cream{background:var(--chocolate);color:var(--branco)}
 .btn[disabled]{opacity:.4;cursor:not-allowed}
@@ -133,7 +143,7 @@ section{padding:48px 0 56px}
 .cake .info{padding:14px 16px 16px 6px}
 .cake h3{margin:0;font-size:19px;line-height:1.2;font-weight:800}
 .cake p{margin:4px 0 12px;font-size:14px;color:var(--canela);line-height:1.4}
-.price-pill .kg{font-size:13px;font-weight:600;margin-left:2px}
+.price-pill .kg{font-size:13px;font-weight:600;margin-left:2px;color:var(--canela)}
 .nopedido{margin:8px 0 0;font-size:13px;font-weight:700;color:var(--rosa)}
 .tam{background:var(--rosaclaro);border-radius:var(--raioP);padding:14px;margin:0 0 18px}
 .tam .ln{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -152,8 +162,8 @@ section{padding:48px 0 56px}
 #doces .unit .ph{background:var(--azulclaro)}
 .unit .info{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;gap:8px}
 .unit h3{margin:0;font-size:16px;line-height:1.2;font-weight:800}
-.unit .pp{font-weight:800;border-radius:999px;padding:2px 12px;align-self:flex-start;font-size:15px;background:var(--chocolate);color:var(--branco)}
-#doces .unit .pp{background:var(--azul);color:var(--chocolate)}
+.unit .pp{font-weight:800;align-self:flex-start;font-size:16px;color:var(--chocolate)}
+
 .unit .pp small{font-weight:700}
 
 .step{display:inline-flex;align-items:center;background:var(--rosaclaro);border-radius:999px;color:var(--chocolate)}
@@ -999,15 +1009,12 @@ function renderBar(){
 
 /* ===== Render catálogo ===== */
 function renderKits(){
-  $("#kitList").innerHTML = KITS.map(k=>`
-    <article class="kit">
-      <div class="kit-side"><small>Kit</small><b>${k.nome}</b><small>até ${k.pessoas} pessoas</small></div>
-      <div class="kit-body">
-        <ul><li><b>${String(k.kg).replace(".",",")} kg</b> de bolo</li><li><b>${k.sal}</b> salgados</li><li><b>${k.doc}</b> doces</li></ul>
-        <span class="opt">Até ${maxOp(k.sal,k.opSal)} sabores de salgados e ${maxOp(k.doc,k.opDoc)} de doces.</span>
-        <div class="kit-foot"><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span>
-        <button class="btn btn-cream" data-kit="${k.id}">Montar kit</button></div>
-      </div>
+  $("#kitList").innerHTML = KITS.map((k,i)=>`
+    <article class="kitc${i%2?" r":""}">
+      <div class="kc-top"><h3>Kit ${k.nome}</h3><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span></div>
+      <p class="kc-pes">Até ${k.pessoas} pessoas</p>
+      <div class="kc-bot"><p class="kc-itens">${String(k.kg).replace(".",",")} kg de bolo · ${k.sal} salgados · ${k.doc} doces</p>
+      <button class="btn btn-cream kc-btn" data-kit="${k.id}">Montar</button></div>
     </article>`).join("");
 }
 function stepper(key,id,q){
