@@ -176,6 +176,8 @@ section{padding:48px 0 56px}
 .unit .pp small{font-weight:700}
 .unit .pp em{font-style:normal;font-weight:600;font-size:13px;color:var(--canela)}
 .u-acao{margin-top:auto}
+.unit .u-step button{width:44px;font-size:15px;font-weight:800}
+.u-step output{min-width:34px}
 #salgados .unit .add,#doces .unit .add{padding:8px 16px}
 
 .step{display:inline-flex;align-items:center;background:var(--rosaclaro);border-radius:999px;color:var(--chocolate)}
@@ -1033,7 +1035,7 @@ function renderKits(){
 }
 function stepper(key,id,q){
   return q>0
-    ? `<span class="step"><button data-dec="${key}:${id}" aria-label="Diminuir">−</button><output>${q}</output><button data-inc="${key}:${id}" aria-label="Aumentar">+</button></span>`
+    ? `<span class="step u-step"><button data-dec="${key}:${id}" aria-label="Diminuir 5">−5</button><output>${q}</output><button data-inc="${key}:${id}" aria-label="Aumentar 5">+5</button></span>`
     : `<button class="add" data-inc="${key}:${id}">Adicionar</button>`;
 }
 function qtdBolo(id){return Object.entries(cart.bolos).filter(([k])=>k.split("~")[0]===id).reduce((s,[,q])=>s+q,0)}
