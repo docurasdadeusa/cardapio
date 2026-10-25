@@ -59,8 +59,8 @@ button{cursor:pointer}
 .confia li{display:flex;gap:8px;align-items:flex-start;line-height:1.35}
 .confia li:before{content:"✓";color:#1F8F4E;font-weight:800;flex:none}
 .quiz-btn{background:var(--rosaclaro);color:var(--chocolate);margin:-8px 0 20px}
-.wa-float{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:35;width:56px;height:56px;border-radius:50%;background:#1F8F4E;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(58,34,32,.28);transition:opacity .2s,transform .2s,bottom .25s}
-.wa-float svg{width:28px;height:28px}
+.wa-float{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:35;width:46px;height:46px;border-radius:50%;background:#1F8F4E;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(58,34,32,.28);transition:opacity .2s,transform .2s,bottom .25s}
+.wa-float svg{width:23px;height:23px}
 .wa-float.oculto{opacity:0;transform:scale(.6);pointer-events:none}
 body.tem-bar .wa-float{bottom:calc(var(--bar) + 14px + env(safe-area-inset-bottom,0px))}
 .hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:18px 0 22px}
@@ -101,7 +101,9 @@ section{padding:48px 0 56px}
 #modelos{background:var(--azulclaro)}
 #modelos .unit{border-color:var(--branco)}
 #modelos .unit .ph{background:var(--branco)}
-#modelos .unit .add{align-self:flex-start;margin-top:auto}
+#modelos .unit .add{align-self:flex-start;margin-top:auto;padding:8px 16px}
+#modelos .unit .info{gap:6px;padding:10px 12px 12px}
+#modelos .unit h3{font-size:15px}
 .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
 .tag-linha{width:14px;height:44px;border-radius:999px;flex:none}
 .sec-title{margin:0;font-size:clamp(36px,10vw,48px);line-height:1;font-weight:800;letter-spacing:-1px}
@@ -120,8 +122,8 @@ section{padding:48px 0 56px}
 .kc-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .kc-top h3{margin:0;font-size:18px;font-weight:800;line-height:1.2}
 .kc-pes{margin:0;font-size:13px;font-weight:700;color:var(--rosa)}
-.kc-bot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px}
-.kc-itens{margin:0;font-size:14px;color:var(--canela);line-height:1.35}
+.kc-bot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding-right:40px}
+.kc-itens{margin:4px 0 0;font-size:14px;color:var(--canela);line-height:1.35}
 .kc-btn{padding:10px 18px;font-size:14px;flex:none}
 /* Kits */
 .kit{display:grid;grid-template-columns:136px 1fr;background:var(--branco);border:2px solid var(--rosaclaro);border-radius:var(--raioG);overflow:hidden;margin-bottom:14px}
@@ -142,12 +144,14 @@ section{padding:48px 0 56px}
 .btn-block{width:100%;padding:16px;font-size:17px}
 
 /* Bolos */
-.cake{display:grid;grid-template-columns:120px 1fr;background:var(--branco);border-radius:var(--raioG);overflow:hidden;margin-bottom:12px}
-.cake .ph{background:var(--rosaclaro);margin:8px;border-radius:24px;overflow:hidden;aspect-ratio:1/1;align-self:start}
+.cake{display:grid;grid-template-columns:96px 1fr;background:var(--branco);border-radius:var(--raioG);overflow:hidden;margin-bottom:12px}
+.cake .ph{background:var(--rosaclaro);margin:8px;border-radius:18px;overflow:hidden;aspect-ratio:1/1;align-self:start}
 .cake .ph img,.unit .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.cake .info{padding:14px 16px 16px 6px}
-.cake h3{margin:0;font-size:19px;line-height:1.2;font-weight:800}
-.cake p{margin:4px 0 12px;font-size:14px;color:var(--canela);line-height:1.4}
+.cake .info{padding:12px 14px 12px 6px}
+.cake .row{flex-wrap:nowrap;padding-right:34px}
+.cake .add{padding:9px 16px}
+.cake h3{margin:0;font-size:17px;line-height:1.2;font-weight:800}
+.cake p{margin:2px 0 8px;font-size:13px;color:var(--canela);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .price-pill .kg{font-size:13px;font-weight:600;margin-left:2px;color:var(--canela)}
 .nopedido{margin:8px 0 0;font-size:13px;font-weight:700;color:var(--rosa)}
 .tam{background:var(--rosaclaro);border-radius:var(--raioP);padding:14px;margin:0 0 18px}
@@ -1020,9 +1024,8 @@ function renderKits(){
   $("#kitList").innerHTML = KITS.map((k,i)=>`
     <article class="kitc${i%2?" r":""}">
       ${selo("kit",k.id)}<div class="kc-top"><h3>Kit ${k.nome}</h3><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span></div>
-      <p class="kc-pes">Até ${k.pessoas} pessoas</p>
-      <div class="kc-bot"><p class="kc-itens">${String(k.kg).replace(".",",")} kg de bolo · ${k.sal} salgados · ${k.doc} doces</p>
-      <button class="btn btn-cream kc-btn" data-kit="${k.id}">Montar</button></div>
+      <p class="kc-itens">${String(k.kg).replace(".",",")} kg de bolo · ${k.sal} salgados · ${k.doc} doces</p>
+      <div class="kc-bot"><p class="kc-pes">Até ${k.pessoas} pessoas</p><button class="btn btn-cream kc-btn" data-kit="${k.id}">Montar</button></div>
     </article>`).join("");
 }
 function stepper(key,id,q){
@@ -1035,7 +1038,7 @@ function renderBolos(){
   patch($("#boloList"), BOLOS.map(b=>`
     <article class="cake"><div class="ph"><img src="${b.img}" alt="" loading="lazy"></div>
       <div class="info">${selo("bolo",b.id)}<h3>${b.nome}</h3><p>${b.desc}</p>
-      <div class="row"><span class="price-pill"><small>R$</small>${b.preco.toFixed(2).replace(".",",")}<small class="kg"> o kg</small></span><button class="add" data-montar="${b.id}">Montar bolo</button></div>
+      <div class="row"><span class="price-pill"><small>R$</small>${b.preco.toFixed(2).replace(".",",")}<small class="kg"> o kg</small></span><button class="add" data-montar="${b.id}">Montar</button></div>
       ${qtdBolo(b.id)?`<p class="nopedido">${qtdBolo(b.id)} no pedido</p>`:""}</div>
     </article>`).join(""));
 }
@@ -1048,7 +1051,7 @@ function renderUnits(el,key,list){
 function renderModelos(){
   patch($("#modList"), MODELOS.map(m=>`
     <article class="unit"><div class="ph"><img src="${m.img}" alt="" loading="lazy">${selo("modelo",m.id)}</div>
-      <div class="info"><h3>${m.nome}</h3><button class="add" data-escolher="${m.id}">Escolher modelo</button></div>
+      <div class="info"><h3>${m.nome}</h3><button class="add" data-escolher="${m.id}">Escolher</button></div>
     </article>`).join(""));
 }
 function renderAll(){renderKits();renderBolos();renderModelos();renderUnits("#salList","salgados",SALGADOS);renderUnits("#docList","doces",DOCES);renderBar()}
