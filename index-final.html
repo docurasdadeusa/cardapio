@@ -108,6 +108,11 @@ section{padding:48px 0 56px}
 .sec-title span{font-weight:400}
 .sec-note{color:var(--canela);max-width:44ch;margin:10px 0 24px}
 
+/* Selos (dados de out/2026: kit, sabor e modelo mais abertos) */
+.selo{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--rosa);background:var(--rosaclaro);border-radius:6px;padding:3px 7px;margin-bottom:6px;line-height:1.2}
+.selo.rec{color:#1F7A44;background:#E3F3EA}
+.unit .ph{position:relative}
+.unit .ph .selo{position:absolute;left:8px;top:8px;margin:0;background:rgba(255,255,255,.92)}
 /* Kits compactos */
 .kitc{position:relative;background:var(--branco);border:2px solid var(--rosaclaro);border-radius:20px;padding:14px 16px 14px 22px;margin-bottom:10px;overflow:hidden}
 .kitc:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--azul)}
@@ -768,6 +773,9 @@ const DOCES = [
   {id:"ourico",nome:"Ouriço",preco:1.6,img:"img/6b12e984e9.webp"}
 ];
 const byId = (list,id)=>list.find(x=>x.id===id);
+/* Selos: atualizar conforme os dados do painel */
+const SELOS = {kit:{essencial:["Mais visto",""],classico:["Recomendado","rec"]}, bolo:{alpino:["Mais visto",""]}, modelo:{bordas:["Mais visto",""]}};
+const selo = (grupo,id)=>{const x=(SELOS[grupo]||{})[id]; return x?`<span class="selo ${x[1]}">${x[0]}</span>`:"";};
 
 /* ===== Utilidades ===== */
 const $ = s=>document.querySelector(s);
@@ -1011,7 +1019,7 @@ function renderBar(){
 function renderKits(){
   $("#kitList").innerHTML = KITS.map((k,i)=>`
     <article class="kitc${i%2?" r":""}">
-      <div class="kc-top"><h3>Kit ${k.nome}</h3><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span></div>
+      ${selo("kit",k.id)}<div class="kc-top"><h3>Kit ${k.nome}</h3><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span></div>
       <p class="kc-pes">Até ${k.pessoas} pessoas</p>
       <div class="kc-bot"><p class="kc-itens">${String(k.kg).replace(".",",")} kg de bolo · ${k.sal} salgados · ${k.doc} doces</p>
       <button class="btn btn-cream kc-btn" data-kit="${k.id}">Montar</button></div>
@@ -1026,7 +1034,7 @@ function qtdBolo(id){return Object.entries(cart.bolos).filter(([k])=>k.split("~"
 function renderBolos(){
   patch($("#boloList"), BOLOS.map(b=>`
     <article class="cake"><div class="ph"><img src="${b.img}" alt="" loading="lazy"></div>
-      <div class="info"><h3>${b.nome}</h3><p>${b.desc}</p>
+      <div class="info">${selo("bolo",b.id)}<h3>${b.nome}</h3><p>${b.desc}</p>
       <div class="row"><span class="price-pill"><small>R$</small>${b.preco.toFixed(2).replace(".",",")}<small class="kg"> o kg</small></span><button class="add" data-montar="${b.id}">Montar bolo</button></div>
       ${qtdBolo(b.id)?`<p class="nopedido">${qtdBolo(b.id)} no pedido</p>`:""}</div>
     </article>`).join(""));
@@ -1039,7 +1047,7 @@ function renderUnits(el,key,list){
 }
 function renderModelos(){
   patch($("#modList"), MODELOS.map(m=>`
-    <article class="unit"><div class="ph"><img src="${m.img}" alt="" loading="lazy"></div>
+    <article class="unit"><div class="ph"><img src="${m.img}" alt="" loading="lazy">${selo("modelo",m.id)}</div>
       <div class="info"><h3>${m.nome}</h3><button class="add" data-escolher="${m.id}">Escolher modelo</button></div>
     </article>`).join(""));
 }
