@@ -28,7 +28,7 @@ button{cursor:pointer}
 /* Hero */
 .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background:var(--rosaclaro);overflow:hidden}
 .hero-bg{position:absolute;inset:-16px;background:url(img/deusa.webp) center 12%/cover no-repeat;filter:blur(2px) saturate(.92)}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(251,227,236,.15) 0%,rgba(251,227,236,0) 22%,rgba(251,227,236,.82) 52%,var(--rosaclaro) 70%)}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(251,227,236,.1) 0%,rgba(251,227,236,0) 25%,rgba(251,227,236,.55) 48%,rgba(251,227,236,.88) 66%,var(--rosaclaro) 80%)}
 .hero-txt{position:relative;z-index:1;width:100%;padding-top:72px;padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
 .hero .lock img{width:36px}.hero .lock .wm{font-size:17px}.hero .lock .sl{font-size:12px}
 .pos-hero{background:var(--rosaclaro)}.pos-hero .wrap{padding-bottom:4px}.pos-hero .promos:not([hidden]),.pos-hero .retoma:not([hidden]){margin-top:0;margin-bottom:20px}
@@ -37,15 +37,19 @@ button{cursor:pointer}
 .lock .wm{margin:0;font-size:20px;line-height:1.1;font-weight:800;letter-spacing:-.2px}
 .lock .wm span{font-weight:400}
 .lock .sl{margin:2px 0 0;font-size:13px;color:var(--canela)}
-.hero h1{margin:18px 0 0;font-size:clamp(30px,8.4vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.8px;max-width:15ch}
+.hero h1{margin:6px 0 0;font-size:clamp(30px,8.4vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.8px;max-width:15ch}
 .hero h1 span{display:block;font-weight:400;font-size:.55em;letter-spacing:-.3px;margin-top:6px}
-.hero p.lead{max-width:36ch;margin:10px 0 0;color:var(--canela);font-size:16px}
-.cta{display:flex;flex-direction:column;align-items:stretch;gap:12px;margin:22px 0 0}
+.hero p.lead{max-width:36ch;margin:6px 0 0;color:var(--canela);font-size:15px}
+.eyebrow{margin:0;font-size:14px;font-weight:700;color:var(--rosa);letter-spacing:.2px}
+.ancora{margin:12px 0 0;font-size:17px;font-weight:600}.ancora b{font-weight:800;color:var(--rosa)}
+.btn-pri{display:flex;align-items:center;justify-content:center;background:var(--chocolate);color:#fff;text-decoration:none;padding:16px 20px;font-size:17px}
+.btn-wa2{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.7);color:#1F7A44;border:2px solid #1F8F4E;text-decoration:none;padding:13px 20px;font-size:16px}
+.cta{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin:20px 0 0}
 .link-sec{align-self:center;color:var(--chocolate);font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:3px;padding:4px}
 .btn-wa{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#1F8F4E;color:#fff;text-decoration:none;padding:16px 20px;font-size:17px;box-shadow:0 6px 18px rgba(31,143,78,.25)}
 .btn-sec{display:inline-flex;align-items:center;justify-content:center;background:var(--branco);color:var(--chocolate);text-decoration:none;flex:1 1 100%;padding:13px 20px}
 @media(min-width:520px){.btn-wa,.btn-sec{flex:1 1 0}}
-.confia{margin:18px 0 0;text-align:center;font-size:13px;font-weight:600;color:var(--canela)}
+.confia{margin:16px 0 0;text-align:center;font-size:13px;font-weight:600;color:var(--canela)}
 .confia a{color:inherit}
 .confia i{font-style:normal;margin:0 4px}
 .confia li{display:flex;gap:8px;align-items:flex-start;line-height:1.35}
@@ -67,7 +71,10 @@ body.tem-bar .wa-float{bottom:calc(var(--bar) + 14px + env(safe-area-inset-botto
 .nav ul{list-style:none;margin:0 auto;padding:10px 16px;display:flex;gap:8px;overflow-x:auto;max-width:720px;scrollbar-width:none;scroll-behavior:smooth}
 .nav ul::-webkit-scrollbar{display:none}
 .nav{--fade:40px}
-.nav-row{max-width:720px;margin:0 auto}
+.nav-row{display:flex;align-items:center;max-width:720px;margin:0 auto;padding-left:16px}
+.nav .nav-logo{flex:none;display:flex;padding:8px 4px 8px 0;border-radius:0;align-items:center;gap:8px;color:var(--chocolate);text-decoration:none;font-weight:800;font-size:15px;line-height:1.1;white-space:nowrap;padding-right:4px}
+.nav .nav-logo img{width:28px;height:auto}.nav .nav-logo b{font-weight:400}
+.nav .navin{position:relative;flex:1;min-width:0}
 .nav .navin{position:relative;flex:1;min-width:0}
 .nav-wa{flex:none;display:inline-flex;align-items:center;gap:6px;background:#1F8F4E;color:#fff;border-radius:999px;padding:8px 12px;font-weight:800;font-size:14px;text-decoration:none;white-space:nowrap}
 .nav-wa svg{width:16px;height:16px;flex:none}
@@ -379,6 +386,7 @@ label.f select:focus{border-color:var(--azul);outline:none}
 
 <nav class="nav" aria-label="Seções do cardápio">
   <div class="nav-row">
+  <a class="nav-logo" href="#" aria-label="Doçuras da Deusa, voltar ao topo"><img src="img/07e7c67fd8.webp" alt=""><span>Doçuras <b>da Deusa</b></span></a>
   <div class="navin" id="navIn">
   <ul id="navUl">
     <li><a href="#kits">Kits festa</a></li>
@@ -396,14 +404,15 @@ label.f select:focus{border-color:var(--azul);outline:none}
 <header class="hero">
   <div class="hero-bg" role="img" aria-label="Deusa, a confeiteira, decorando um bolo"></div>
   <div class="wrap hero-txt">
-    <div class="lock"><img src="img/07e7c67fd8.webp" alt=""><div><p class="wm">Doçuras <span>da Deusa</span></p><p class="sl">Carinho que vira sabor.</p></div></div>
-    <h1>Feito à mão, com o sabor que sua festa merece.</h1>
+    <p class="eyebrow">Carinho que vira sabor</p>
+    <h1>Feito à mão pela Deusa, com o sabor que sua festa merece.</h1>
+    <p class="ancora">Bolo decorado a partir de <b>R$ 75</b></p>
     <p class="lead">Bolos, salgados e doces sob encomenda. Orçamento na hora pelo WhatsApp.</p>
     <div class="cta" id="heroCta">
-      <a class="btn btn-wa" id="waHero" href="https://wa.me/5581996055239" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>Fazer meu pedido</a>
-      <a class="link-sec" id="verCardapio" href="#kits">Ver cardápio e preços</a>
+      <a class="btn btn-pri" id="verCardapio" href="#kits">Ver cardápio completo</a>
+      <a class="btn btn-wa2" id="waHero" href="https://wa.me/5581996055239" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>Ser atendido no WhatsApp</a>
     </div>
-    <p class="confia">Retirada na Várzea <i>·</i> <a href="https://www.instagram.com/docurasdadeusaa/" target="_blank" rel="noopener">@docurasdadeusaa</a> <i>·</i> 3 dias úteis de antecedência</p>
+    <p class="confia">Retirada na Várzea <i>·</i> <a href="https://www.instagram.com/docurasdadeusaa/" target="_blank" rel="noopener">@docurasdadeusaa</a></p>
   </div>
 </header>
 <div class="pos-hero"><div class="wrap">
