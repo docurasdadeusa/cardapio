@@ -92,6 +92,8 @@ body.tem-bar .wa-float{bottom:calc(var(--bar) + 14px + env(safe-area-inset-botto
 .nav a.on{background:var(--chocolate);color:var(--branco)}
 
 section{padding:48px 0 56px}
+#promocoes{background:var(--rosaclaro);padding-top:28px}
+#promocoes .promos{margin-top:8px}
 #kits{background:var(--branco)}
 #bolos{background:var(--rosaclaro)}
 #salgados{background:var(--branco)}
@@ -393,6 +395,7 @@ label.f select:focus{border-color:var(--azul);outline:none}
   <a class="nav-logo" href="#" aria-label="Doçuras da Deusa, voltar ao topo"><img src="img/07e7c67fd8.webp" alt=""><span>Doçuras <b>da Deusa</b></span></a>
   <div class="navin" id="navIn">
   <ul id="navUl">
+    <li id="navPromo" hidden><a href="#promocoes">Promoções</a></li>
     <li><a href="#kits">Kits festa</a></li>
     <li><a href="#bolos">Bolos</a></li>
     <li><a href="#modelos">Modelos de bolo</a></li>
@@ -421,13 +424,18 @@ label.f select:focus{border-color:var(--azul);outline:none}
 </header>
 <div class="pos-hero"><div class="wrap">
     <div class="retoma" id="retoma" hidden><p><b>Seu pedido está salvo</b><span id="retomaTxt"></span></p><button type="button" class="btn" id="retomaBtn">Continuar</button><button type="button" class="x" id="retomaX" aria-label="Dispensar">×</button></div>
-    <div class="promos" id="promos" aria-label="Promoções" hidden></div>
-    <div class="dots" id="promoDots" aria-hidden="true" hidden></div>
 </div></div>
 
 
 
 <main>
+  <section id="promocoes" hidden>
+    <div class="wrap">
+      <div class="sec-head"><span class="tag-linha" style="background:var(--rosa)"></span><h2 class="sec-title">Promoções</h2></div>
+      <div class="promos" id="promos" aria-label="Promoções" hidden></div>
+      <div class="dots" id="promoDots" aria-hidden="true" hidden></div>
+    </div>
+  </section>
   <section id="kits">
     <div class="wrap">
       <div class="sec-head"><span class="tag-linha" style="background:linear-gradient(var(--rosa) 50%,var(--azul) 50%)"></span><h2 class="sec-title">Kits <span>festa</span></h2></div>
@@ -474,7 +482,7 @@ label.f select:focus{border-color:var(--azul);outline:none}
       <div class="sec-head"><span class="tag-linha" style="background:var(--chocolate)"></span><h2 class="sec-title">Como <span>funciona</span></h2></div>
       <dl class="resumo-cond">
         <div><dt>Prazo</dt><dd>Pelo menos 3 dias úteis de antecedência, conforme a agenda. Precisa para esta semana? Chame no WhatsApp que verificamos.</dd></div>
-        <div><dt>Pagamento</dt><dd>Sinal de 50% para confirmar e o restante na retirada. Pix, dinheiro ou cartão.</dd></div>
+        <div><dt>Pagamento</dt><dd>Sinal de 50% para confirmar e o restante na retirada. Confirmação e pagamento pelo WhatsApp: Pix, cartão ou dinheiro, entregue em mão.</dd></div>
         <div><dt>Retirada</dt><dd>Na Várzea, perto do Instituto Ricardo Brennand. Sem entrega: retire conosco ou por carro de aplicativo.</dd></div>
         <div><dt>Topo de bolo</dt><dd>Orçado à parte pelo WhatsApp.</dd></div>
         <div><dt>Alergênicos</dt><dd>Pode conter leite, ovos, glúten, amendoim e castanhas.</dd></div>
@@ -544,7 +552,7 @@ label.f select:focus{border-color:var(--azul);outline:none}
       <p class="who" id="who"></p>
       <ul class="sum" id="sumList"></ul>
       <p class="aviso" id="sumNota"></p>
-      <div class="aceite"><p>Encomendas com pelo menos 3 dias úteis de antecedência, conforme a agenda. Sinal de 50% para confirmar a encomenda e o restante na retirada. Sem entrega: retirada combinada conosco ou por carro de aplicativo. Cancelamento conforme as condições.</p>
+      <div class="aceite"><p>Encomendas com pelo menos 3 dias úteis de antecedência, conforme a agenda. Sinal de 50% para confirmar a encomenda e o restante na retirada, com confirmação e pagamento pelo WhatsApp (Pix, cartão ou dinheiro em mão). Sem entrega: retirada combinada conosco ou por carro de aplicativo. Cancelamento conforme as condições.</p>
         <button type="button" id="verCond">Ver condições completas</button>
         <label style="margin-top:10px"><input type="checkbox" id="aceite"> Li e concordo com as condições</label></div>
       <div class="cupom"><label class="f">Cupom de desconto<input type="text" id="cupomIn" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30"></label><button type="button" class="btn" id="cupomBtn">Aplicar</button></div>
@@ -590,8 +598,8 @@ label.f select:focus{border-color:var(--azul);outline:none}
         <li>Todas as encomendas estão sujeitas à disponibilidade da nossa agenda, confirmada pelo WhatsApp.</li></ul></div>
       <div class="cond-b"><h3>Pagamento</h3><ul>
         <li>O sinal de 50% confirma a sua encomenda. O restante é pago na retirada.</li>
-        <li>A data limite para o sinal é informada junto com o orçamento.</li>
-        <li>Aceitamos dinheiro, Pix e cartão. O parcelamento no cartão tem juros.</li></ul></div>
+        <li>A confirmação e o pagamento são feitos pelo WhatsApp. A data limite para o sinal é informada junto com o orçamento.</li>
+        <li>Aceitamos Pix, cartão ou dinheiro, entregue em mão. O parcelamento no cartão tem juros.</li></ul></div>
       <div class="cond-b"><h3>Retirada</h3><ul>
         <li>Não fazemos entrega. A retirada é feita diretamente conosco, e o local é informado no atendimento.</li>
         <li>Se preferir, embalamos o pedido com cuidado e colocamos no carro de aplicativo. A corrida é solicitada e paga por você.</li></ul></div>
@@ -878,6 +886,7 @@ function renderBanners(lista){
   bannersKey=key; banners=novo;
   const box=$("#promos"), dots=$("#promoDots"), ref=$("main"), y0=ref.getBoundingClientRect().top;
   box.hidden=!banners.length; dots.hidden=banners.length<2;
+  $("#promocoes").hidden=!banners.length; $("#navPromo").hidden=!banners.length; navSombras&&navSombras();
   box.classList.toggle("um",banners.length===1);
   box.innerHTML=banners.map(bannerHTML).join("");
   dots.innerHTML=banners.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("");
