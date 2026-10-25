@@ -174,6 +174,9 @@ section{padding:48px 0 56px}
 .unit .pp{font-weight:800;align-self:flex-start;font-size:16px;color:var(--chocolate)}
 
 .unit .pp small{font-weight:700}
+.unit .pp em{font-style:normal;font-weight:600;font-size:13px;color:var(--canela)}
+.u-acao{margin-top:auto}
+#salgados .unit .add,#doces .unit .add{padding:8px 16px}
 
 .step{display:inline-flex;align-items:center;background:var(--rosaclaro);border-radius:999px;color:var(--chocolate)}
 #doces .step{background:var(--azulclaro)}
@@ -1045,7 +1048,7 @@ function renderBolos(){
 function renderUnits(el,key,list){
   patch($(el), list.map(p=>`
     <article class="unit"><div class="ph"><img src="${p.img}" alt="" loading="lazy"></div>
-      <div class="info"><h3>${p.nome}</h3><span class="pp"><small>R$</small> ${p.preco.toFixed(2).replace(".",",")}</span>${stepper(key,p.id,cart[key][p.id]||0)}</div>
+      <div class="info"><h3>${p.nome}</h3><span class="pp"><small>R$</small> ${(p.preco*CONFIG.MIN_POR_SABOR).toFixed(2).replace(".",",").replace(",00","")} <em>· ${CONFIG.MIN_POR_SABOR} un.</em></span><div class="u-acao">${stepper(key,p.id,cart[key][p.id]||0)}</div></div>
     </article>`).join(""));
 }
 function renderModelos(){
