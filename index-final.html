@@ -26,10 +26,12 @@ button{cursor:pointer}
 .wrap{max-width:720px;margin:0 auto;padding:0 20px}
 
 /* Hero */
-.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:flex-end;background:var(--rosaclaro);overflow:hidden}
-.hero-bg{position:absolute;inset:-16px;background:url(img/deusa.webp) center 12%/cover no-repeat;filter:blur(2px) saturate(.92)}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(251,227,236,.1) 0%,rgba(251,227,236,0) 25%,rgba(251,227,236,.55) 48%,rgba(251,227,236,.88) 66%,var(--rosaclaro) 80%)}
-.hero-txt{position:relative;z-index:1;width:100%;padding-top:72px;padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+.hero{position:relative;background:var(--rosaclaro);overflow:hidden;padding-top:calc(56px + env(safe-area-inset-top,0px))}
+.hero-bg{position:relative;height:46vh;height:46svh;min-height:280px;max-height:520px;background:url(img/deusa.webp) center 42%/cover no-repeat;filter:saturate(.95)}
+.hero-bg:after{content:"";position:absolute;left:0;right:0;bottom:0;height:28%;background:linear-gradient(180deg,rgba(251,227,236,0),var(--rosaclaro))}
+@media(min-width:620px){.hero-bg{max-width:720px;margin:0 auto;border-radius:0 0 32px 32px}}
+
+.hero-txt{position:relative;z-index:1;margin-top:-18px;padding-bottom:28px}
 .hero .lock img{width:36px}.hero .lock .wm{font-size:17px}.hero .lock .sl{font-size:12px}
 .pos-hero{background:var(--rosaclaro)}.pos-hero .wrap{padding-bottom:4px}.pos-hero .promos:not([hidden]),.pos-hero .retoma:not([hidden]){margin-top:0;margin-bottom:20px}
 .lock{display:flex;align-items:center;gap:12px}
@@ -37,7 +39,7 @@ button{cursor:pointer}
 .lock .wm{margin:0;font-size:20px;line-height:1.1;font-weight:800;letter-spacing:-.2px}
 .lock .wm span{font-weight:400}
 .lock .sl{margin:2px 0 0;font-size:13px;color:var(--canela)}
-.hero h1{margin:6px 0 0;font-size:clamp(30px,8.4vw,48px);line-height:1.08;font-weight:800;letter-spacing:-.8px;max-width:15ch}
+.hero h1{margin:4px 0 0;font-size:clamp(26px,7.2vw,42px);line-height:1.1;font-weight:800;letter-spacing:-.6px;max-width:19ch}
 .hero h1 span{display:block;font-weight:400;font-size:.55em;letter-spacing:-.3px;margin-top:6px}
 .hero p.lead{max-width:36ch;margin:6px 0 0;color:var(--canela);font-size:15px}
 .eyebrow{margin:0;font-size:14px;font-weight:700;color:var(--rosa);letter-spacing:.2px}
