@@ -59,8 +59,8 @@ button{cursor:pointer}
 .confia li{display:flex;gap:8px;align-items:flex-start;line-height:1.35}
 .confia li:before{content:"✓";color:#1F8F4E;font-weight:800;flex:none}
 .quiz-btn{background:var(--rosaclaro);color:var(--chocolate);margin:-8px 0 20px}
-.wa-float{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:35;width:56px;height:56px;border-radius:50%;background:#1F8F4E;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(58,34,32,.28);transition:opacity .2s,transform .2s,bottom .25s}
-.wa-float svg{width:28px;height:28px}
+.wa-float{position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:35;width:46px;height:46px;border-radius:50%;background:#1F8F4E;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(58,34,32,.28);transition:opacity .2s,transform .2s,bottom .25s}
+.wa-float svg{width:23px;height:23px}
 .wa-float.oculto{opacity:0;transform:scale(.6);pointer-events:none}
 body.tem-bar .wa-float{bottom:calc(var(--bar) + 14px + env(safe-area-inset-bottom,0px))}
 .hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:18px 0 22px}
@@ -101,13 +101,30 @@ section{padding:48px 0 56px}
 #modelos{background:var(--azulclaro)}
 #modelos .unit{border-color:var(--branco)}
 #modelos .unit .ph{background:var(--branco)}
-#modelos .unit .add{align-self:flex-start;margin-top:auto}
+#modelos .unit .add{align-self:flex-start;margin-top:auto;padding:8px 16px}
+#modelos .unit .info{gap:6px;padding:10px 12px 12px}
+#modelos .unit h3{font-size:15px}
 .sec-head{display:flex;align-items:center;gap:14px;margin:0 0 6px}
 .tag-linha{width:14px;height:44px;border-radius:999px;flex:none}
 .sec-title{margin:0;font-size:clamp(36px,10vw,48px);line-height:1;font-weight:800;letter-spacing:-1px}
 .sec-title span{font-weight:400}
 .sec-note{color:var(--canela);max-width:44ch;margin:10px 0 24px}
 
+/* Selos (dados de out/2026: kit, sabor e modelo mais abertos) */
+.selo{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--rosa);background:var(--rosaclaro);border-radius:6px;padding:3px 7px;margin-bottom:6px;line-height:1.2}
+.selo.rec{color:#1F7A44;background:#E3F3EA}
+.unit .ph{position:relative}
+.unit .ph .selo{position:absolute;left:8px;top:8px;margin:0;background:rgba(255,255,255,.92)}
+/* Kits compactos */
+.kitc{position:relative;background:var(--branco);border:2px solid var(--rosaclaro);border-radius:20px;padding:14px 16px 14px 22px;margin-bottom:10px;overflow:hidden}
+.kitc:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--azul)}
+.kitc.r:before{background:var(--rosa)}
+.kc-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.kc-top h3{margin:0;font-size:18px;font-weight:800;line-height:1.2}
+.kc-pes{margin:0;font-size:13px;font-weight:700;color:var(--rosa)}
+.kc-bot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:8px;padding-right:40px}
+.kc-itens{margin:4px 0 0;font-size:14px;color:var(--canela);line-height:1.35}
+.kc-btn{padding:10px 18px;font-size:14px;flex:none}
 /* Kits */
 .kit{display:grid;grid-template-columns:136px 1fr;background:var(--branco);border:2px solid var(--rosaclaro);border-radius:var(--raioG);overflow:hidden;margin-bottom:14px}
 .kit-side{background:var(--azul);color:var(--chocolate);display:flex;flex-direction:column;justify-content:center;text-align:center;padding:16px 8px}
@@ -119,21 +136,23 @@ section{padding:48px 0 56px}
 .kit-body li b{color:var(--chocolate);font-weight:800}
 .kit-body .opt{font-size:13px;color:var(--canela)}
 .kit-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:4px}
-.price-pill{background:var(--rosa);color:var(--branco);font-weight:800;font-size:22px;border-radius:999px;padding:4px 16px;white-space:nowrap}
-.price-pill small{font-size:13px;font-weight:700;margin-right:3px}
+.price-pill{color:var(--chocolate);font-weight:800;font-size:20px;white-space:nowrap;letter-spacing:-.3px}
+.price-pill small{font-size:13px;font-weight:700;margin-right:2px}
 .btn{border:0;border-radius:999px;padding:12px 22px;font-weight:800;font-size:15px}
 .btn-cream{background:var(--chocolate);color:var(--branco)}
 .btn[disabled]{opacity:.4;cursor:not-allowed}
 .btn-block{width:100%;padding:16px;font-size:17px}
 
 /* Bolos */
-.cake{display:grid;grid-template-columns:120px 1fr;background:var(--branco);border-radius:var(--raioG);overflow:hidden;margin-bottom:12px}
-.cake .ph{background:var(--rosaclaro);margin:8px;border-radius:24px;overflow:hidden;aspect-ratio:1/1;align-self:start}
+.cake{display:grid;grid-template-columns:96px 1fr;background:var(--branco);border-radius:var(--raioG);overflow:hidden;margin-bottom:12px}
+.cake .ph{background:var(--rosaclaro);margin:8px;border-radius:18px;overflow:hidden;aspect-ratio:1/1;align-self:start}
 .cake .ph img,.unit .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.cake .info{padding:14px 16px 16px 6px}
-.cake h3{margin:0;font-size:19px;line-height:1.2;font-weight:800}
-.cake p{margin:4px 0 12px;font-size:14px;color:var(--canela);line-height:1.4}
-.price-pill .kg{font-size:13px;font-weight:600;margin-left:2px}
+.cake .info{padding:12px 14px 12px 6px}
+.cake .row{flex-wrap:nowrap;padding-right:34px}
+.cake .add{padding:9px 16px}
+.cake h3{margin:0;font-size:17px;line-height:1.2;font-weight:800}
+.cake p{margin:2px 0 8px;font-size:13px;color:var(--canela);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.price-pill .kg{font-size:13px;font-weight:600;margin-left:2px;color:var(--canela)}
 .nopedido{margin:8px 0 0;font-size:13px;font-weight:700;color:var(--rosa)}
 .tam{background:var(--rosaclaro);border-radius:var(--raioP);padding:14px;margin:0 0 18px}
 .tam .ln{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -152,9 +171,14 @@ section{padding:48px 0 56px}
 #doces .unit .ph{background:var(--azulclaro)}
 .unit .info{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column;gap:8px}
 .unit h3{margin:0;font-size:16px;line-height:1.2;font-weight:800}
-.unit .pp{font-weight:800;border-radius:999px;padding:2px 12px;align-self:flex-start;font-size:15px;background:var(--chocolate);color:var(--branco)}
-#doces .unit .pp{background:var(--azul);color:var(--chocolate)}
+.unit .pp{font-weight:800;align-self:flex-start;font-size:16px;color:var(--chocolate)}
+
 .unit .pp small{font-weight:700}
+.unit .pp em{font-style:normal;font-weight:600;font-size:13px;color:var(--canela)}
+.u-acao{margin-top:auto}
+.unit .u-step button{width:44px;font-size:15px;font-weight:800}
+.u-step output{min-width:34px}
+#salgados .unit .add,#doces .unit .add{padding:8px 16px}
 
 .step{display:inline-flex;align-items:center;background:var(--rosaclaro);border-radius:999px;color:var(--chocolate)}
 #doces .step{background:var(--azulclaro)}
@@ -758,6 +782,9 @@ const DOCES = [
   {id:"ourico",nome:"Ouriço",preco:1.6,img:"img/6b12e984e9.webp"}
 ];
 const byId = (list,id)=>list.find(x=>x.id===id);
+/* Selos: atualizar conforme os dados do painel */
+const SELOS = {kit:{essencial:["Mais visto",""],classico:["Recomendado","rec"]}, bolo:{alpino:["Mais visto",""]}, modelo:{bordas:["Mais visto",""]}};
+const selo = (grupo,id)=>{const x=(SELOS[grupo]||{})[id]; return x?`<span class="selo ${x[1]}">${x[0]}</span>`:"";};
 
 /* ===== Utilidades ===== */
 const $ = s=>document.querySelector(s);
@@ -999,41 +1026,37 @@ function renderBar(){
 
 /* ===== Render catálogo ===== */
 function renderKits(){
-  $("#kitList").innerHTML = KITS.map(k=>`
-    <article class="kit">
-      <div class="kit-side"><small>Kit</small><b>${k.nome}</b><small>até ${k.pessoas} pessoas</small></div>
-      <div class="kit-body">
-        <ul><li><b>${String(k.kg).replace(".",",")} kg</b> de bolo</li><li><b>${k.sal}</b> salgados</li><li><b>${k.doc}</b> doces</li></ul>
-        <span class="opt">Até ${maxOp(k.sal,k.opSal)} sabores de salgados e ${maxOp(k.doc,k.opDoc)} de doces.</span>
-        <div class="kit-foot"><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span>
-        <button class="btn btn-cream" data-kit="${k.id}">Montar kit</button></div>
-      </div>
+  $("#kitList").innerHTML = KITS.map((k,i)=>`
+    <article class="kitc${i%2?" r":""}">
+      ${selo("kit",k.id)}<div class="kc-top"><h3>Kit ${k.nome}</h3><span class="price-pill"><small>R$</small>${k.preco.toFixed(2).replace(".",",")}</span></div>
+      <p class="kc-itens">${String(k.kg).replace(".",",")} kg de bolo · ${k.sal} salgados · ${k.doc} doces</p>
+      <div class="kc-bot"><p class="kc-pes">Até ${k.pessoas} pessoas</p><button class="btn btn-cream kc-btn" data-kit="${k.id}">Montar</button></div>
     </article>`).join("");
 }
 function stepper(key,id,q){
   return q>0
-    ? `<span class="step"><button data-dec="${key}:${id}" aria-label="Diminuir">−</button><output>${q}</output><button data-inc="${key}:${id}" aria-label="Aumentar">+</button></span>`
+    ? `<span class="step u-step"><button data-dec="${key}:${id}" aria-label="Diminuir 5">−5</button><output>${q}</output><button data-inc="${key}:${id}" aria-label="Aumentar 5">+5</button></span>`
     : `<button class="add" data-inc="${key}:${id}">Adicionar</button>`;
 }
 function qtdBolo(id){return Object.entries(cart.bolos).filter(([k])=>k.split("~")[0]===id).reduce((s,[,q])=>s+q,0)}
 function renderBolos(){
   patch($("#boloList"), BOLOS.map(b=>`
     <article class="cake"><div class="ph"><img src="${b.img}" alt="" loading="lazy"></div>
-      <div class="info"><h3>${b.nome}</h3><p>${b.desc}</p>
-      <div class="row"><span class="price-pill"><small>R$</small>${b.preco.toFixed(2).replace(".",",")}<small class="kg"> o kg</small></span><button class="add" data-montar="${b.id}">Montar bolo</button></div>
+      <div class="info">${selo("bolo",b.id)}<h3>${b.nome}</h3><p>${b.desc}</p>
+      <div class="row"><span class="price-pill"><small>R$</small>${b.preco.toFixed(2).replace(".",",")}<small class="kg"> o kg</small></span><button class="add" data-montar="${b.id}">Montar</button></div>
       ${qtdBolo(b.id)?`<p class="nopedido">${qtdBolo(b.id)} no pedido</p>`:""}</div>
     </article>`).join(""));
 }
 function renderUnits(el,key,list){
   patch($(el), list.map(p=>`
     <article class="unit"><div class="ph"><img src="${p.img}" alt="" loading="lazy"></div>
-      <div class="info"><h3>${p.nome}</h3><span class="pp"><small>R$</small> ${p.preco.toFixed(2).replace(".",",")}</span>${stepper(key,p.id,cart[key][p.id]||0)}</div>
+      <div class="info"><h3>${p.nome}</h3><span class="pp"><small>R$</small> ${(p.preco*CONFIG.MIN_POR_SABOR).toFixed(2).replace(".",",").replace(",00","")} <em>· ${CONFIG.MIN_POR_SABOR} un.</em></span><div class="u-acao">${stepper(key,p.id,cart[key][p.id]||0)}</div></div>
     </article>`).join(""));
 }
 function renderModelos(){
   patch($("#modList"), MODELOS.map(m=>`
-    <article class="unit"><div class="ph"><img src="${m.img}" alt="" loading="lazy"></div>
-      <div class="info"><h3>${m.nome}</h3><button class="add" data-escolher="${m.id}">Escolher modelo</button></div>
+    <article class="unit"><div class="ph"><img src="${m.img}" alt="" loading="lazy">${selo("modelo",m.id)}</div>
+      <div class="info"><h3>${m.nome}</h3><button class="add" data-escolher="${m.id}">Escolher</button></div>
     </article>`).join(""));
 }
 function renderAll(){renderKits();renderBolos();renderModelos();renderUnits("#salList","salgados",SALGADOS);renderUnits("#docList","doces",DOCES);renderBar()}
