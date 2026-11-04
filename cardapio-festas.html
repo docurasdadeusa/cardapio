@@ -240,7 +240,7 @@ const CONFIG = {
   WHATSAPP: "5581996055239",            // mesmo número do cardápio principal
   VIP_ATE: "2026-10-23T23:59:59-03:00", // fim do desconto VIP nos avulsos
   VIP_DESCONTO: 0.10,
-  SINAL: 0.30,
+  SINAL: 0.50,
   SALDO_ATE: "05/12",
   PREFIXO_PEDIDO: "FES",
   INSTAGRAM: "https://www.instagram.com/docurasdadeusaa/",
@@ -329,9 +329,9 @@ const AVULSOS = [
       tam:[{r:"700 g",p:35,s:"serve 12 a 14"},{r:"1,5 kg",p:65,s:"serve 25 a 30"},{r:"2 kg",p:79,s:"serve 35 a 40"}] }
   ]},
   { secao:"sobremesas", grande:true, titulo:["Pavês","de festa"], sub:"Em 1,2 kg ou 2 kg.", itens:[
-    { id:"pave_classico", nome:"Pavê clássico", desc:"Camadas de biscoito e creme bem geladinho, do jeitinho que a família gosta.", tam:[{r:"1,2 kg",p:97,s:"serve 10 a 12"},{r:"2 kg",p:149,s:"serve 18 a 20"}] },
-    { id:"pave_alpino", nome:"Pavê Alpino com avelã", desc:"Creme de chocolate com avelã entre camadas macias, para fechar a noite com chave de ouro.", tam:[{r:"1,2 kg",p:115,s:"serve 10 a 12"},{r:"2 kg",p:179,s:"serve 18 a 20"}] },
-    { id:"pave_pistache", nome:"Pavê de pistache", desc:"Camadas de creme sabor pistache. A sobremesa do momento.", tam:[{r:"1,2 kg",p:149,s:"serve 10 a 12"},{r:"2 kg",p:229,s:"serve 18 a 20"}] }
+    { id:"pave_classico", nome:"Pavê clássico", desc:"Camadas de biscoito e creme bem geladinho, do jeitinho que a família gosta.", tam:[{r:"1,2 kg",p:97,s:"serve 8 a 10"},{r:"2 kg",p:149,s:"serve 16 a 18"}] },
+    { id:"pave_alpino", nome:"Pavê Alpino com avelã", desc:"Creme de chocolate com avelã entre camadas macias, para fechar a noite com chave de ouro.", tam:[{r:"1,2 kg",p:115,s:"serve 8 a 10"},{r:"2 kg",p:179,s:"serve 16 a 18"}] },
+    { id:"pave_pistache", nome:"Pavê de pistache", desc:"Camadas de creme sabor pistache. A sobremesa do momento.", tam:[{r:"1,2 kg",p:149,s:"serve 8 a 10"},{r:"2 kg",p:229,s:"serve 16 a 18"}] }
   ]},
   { secao:"bolos", sabores:true, titulo:["Bolos","de festa"], sub:"Escolha o sabor e depois o modelo. Preço por kg, a partir de 1 kg.", itens:[
   ]},
@@ -561,7 +561,7 @@ const salvar = () => { try { localStorage.setItem("ddFestas2026", JSON.stringify
 function textosFixos(){
   const v = vipAtivo();
   const dias = CONFIG.DIAS.map(d => d.curto);
-  $("#calmaTxt").textContent = `Você reserva com ${Math.round(CONFIG.SINAL*100)}% de sinal. Se o restante não for pago até ${CONFIG.SALDO_ATE}, devolvemos o seu sinal e o horário é liberado.`;
+  $("#calmaTxt").textContent = `Você confirma com ${Math.round(CONFIG.SINAL*100)}% de sinal e paga o restante no dia da retirada.`;
   $("#politica").textContent = CONFIG.POLITICA;
   $("#lnkInsta").href = CONFIG.INSTAGRAM;
   $("#lnkWhats").href = "https://wa.me/" + CONFIG.WHATSAPP;
@@ -622,7 +622,7 @@ function renderConfianca(){
   const deps = CONFIG.DEPOIMENTOS.map(d => { const h = (d.insta || "").replace(/^@/, "");
     return `<figure class="dep"><blockquote>“${esc(d.texto)}”</blockquote><figcaption>${esc(d.autor)}${h ? ` · <a href="https://instagram.com/${encodeURIComponent(h)}" target="_blank" rel="noopener">@${esc(h)}</a>` : ""}</figcaption></figure>`; }).join("");
   $("#confianca").innerHTML = (deps ? `<h3><b class="forte">Quem já pediu</b> nas festas do ano passado</h3>${deps}` : "") +
-    `<div style="display:flex;gap:10px;align-items:flex-start"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A7340" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><p style="font-size:14px;line-height:20px;font-weight:600">Você reserva com ${Math.round(CONFIG.SINAL*100)}% de sinal. Se não concluir até ${CONFIG.SALDO_ATE}, devolvemos o valor.</p></div>`;
+    `<div style="display:flex;gap:10px;align-items:flex-start"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5A7340" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><p style="font-size:14px;line-height:20px;font-weight:600">Você confirma com ${Math.round(CONFIG.SINAL*100)}% de sinal e paga o restante no dia da retirada.</p></div>`;
 }
 
 /* avulsos */
@@ -807,7 +807,7 @@ function renderPainel(){
     ${t.desc ? `<div class="res desc"><span>Desconto VIP nos avulsos</span><span>− ${brl(t.desc)}</span></div>` : ""}
     <div class="sep"></div>
     <div class="res total"><span>Total</span><span>${brl(t.total)}</span></div>
-    <div class="sinal"><div class="res total"><span>Sinal agora (${Math.round(CONFIG.SINAL*100)}%)</span><span>${brl(t.sinal)}</span></div><div class="res"><span>Restante até ${CONFIG.SALDO_ATE}</span><span>${brl(t.saldo)}</span></div></div>`;
+    <div class="sinal"><div class="res total"><span>Sinal agora (${Math.round(CONFIG.SINAL*100)}%)</span><span>${brl(t.sinal)}</span></div><div class="res"><span>Restante na retirada</span><span>${brl(t.saldo)}</span></div></div>`;
 
   $("#balao").innerHTML = balaoHTML();
   const f = faltando();
@@ -823,7 +823,7 @@ function mensagem(){
     `Retirada: ${dia ? dia.curto : "[dia]"}, ${estado.janela || "[horário]"}`,
     `Total: ${brl(t.total)}` + (t.desc ? ` (já com ${brl(t.desc)} de desconto VIP)` : ""),
     `Sinal (${Math.round(CONFIG.SINAL*100)}%): ${brl(t.sinal)}`,
-    `Restante até ${CONFIG.SALDO_ATE}: ${brl(t.saldo)}`,
+    `Restante na retirada: ${brl(t.saldo)}`,
     `Nome: ${$("#nome").value.trim() || "[nome]"}`,
     `WhatsApp: ${$("#whats").value.trim() || "[whatsapp]"}`,
     `Bairro: ${$("#bairro").value.trim() || "[bairro]"}`
