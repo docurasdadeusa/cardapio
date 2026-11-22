@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Doçuras da Deusa | Almoço, encomendas e Natal</title>
+<meta name="description" content="Reserve o almoço do dia, monte sua encomenda de festa ou veja o cardápio de Natal e Ano Novo da Doçuras da Deusa.">
+<meta name="theme-color" content="#FBE3EC">
+<link rel="icon" href="img/07e7c67fd8.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rosa:#D92B68;--azul:#14B4DC;--rosaclaro:#FBE3EC;--azulclaro:#DDF3FA;
+  --chocolate:#3A2220;--canela:#7A5E58;--branco:#FFFFFF;--verde:#1F8F4E;
+  --sans:'Raleway','Helvetica Neue',Arial,sans-serif;--raioG:28px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);font-variant-numeric:lining-nums;color:var(--chocolate);background:var(--branco);font-size:16px;line-height:1.5;font-weight:500;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--azul);outline-offset:2px;border-radius:8px}
+.wrap{max-width:560px;margin:0 auto;padding:0 20px}
+
+/* Topo */
+.hero{background:var(--rosaclaro);padding:calc(22px + env(safe-area-inset-top,0px)) 0 30px;border-radius:0 0 var(--raioG) var(--raioG)}
+.lock{display:flex;align-items:center;gap:12px}
+.lock img{width:44px}
+.lock .wm{margin:0;font-size:20px;line-height:1.1;font-weight:800}
+.lock .wm span{font-weight:400}
+.lock .sl{margin:2px 0 0;font-size:13px;color:var(--canela)}
+.hero h1{margin:28px 0 0;font-size:clamp(28px,8vw,38px);line-height:1.12;font-weight:400;letter-spacing:-.5px;text-wrap:balance}
+.hero h1 b{font-weight:800}
+
+/* Caminhos */
+.caminhos{display:flex;flex-direction:column;gap:14px;margin:24px 0 0}
+.cam{position:relative;display:grid;grid-template-columns:72px 1fr 24px;align-items:center;gap:14px;width:100%;text-align:left;text-decoration:none;color:var(--chocolate);background:var(--branco);border:2px solid var(--rosaclaro);border-radius:22px;padding:16px;transition:transform .15s,border-color .15s}
+.cam:active{transform:scale(.98)}
+.cam:hover{border-color:var(--rosa)}
+.cam .ic{width:72px;height:72px;border-radius:18px;background:var(--rosaclaro);display:flex;align-items:center;justify-content:center}
+.cam .ic svg{width:40px;height:40px;stroke:var(--chocolate);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.cam b{display:block;font-size:18px;line-height:1.2;font-weight:800}
+.cam small{display:block;margin-top:4px;font-size:14px;color:var(--canela);line-height:1.35}
+.cam .seta{font-size:26px;color:var(--rosa);font-weight:800}
+.pill{display:inline-block;margin-top:8px;font-size:12px;font-weight:800;letter-spacing:.3px;padding:4px 10px;border-radius:999px;background:#F7F2F0;color:var(--canela)}
+.pill.aberto{background:#E3F4EA;color:#17683A}
+.wa{display:flex;align-items:center;justify-content:center;gap:8px;margin:22px 0 0;color:var(--verde);font-weight:800;text-decoration:none;padding:12px}
+.rodape{margin:8px 0 40px;text-align:center;font-size:13px;color:var(--canela)}
+.rodape a{color:inherit}
+
+/* Folha do almoço */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(58,34,32,.55);display:none;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:var(--branco);width:100%;max-width:560px;max-height:94vh;overflow:auto;border-radius:var(--raioG) var(--raioG) 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px))}
+@media(min-width:620px){.ov{align-items:center}.sheet{border-radius:var(--raioG)}}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sh-nav{display:flex;align-items:center;justify-content:space-between;margin:-6px 0 14px}
+.voltar{border:0;background:none;padding:6px 0;font-weight:800;font-size:15px;color:var(--rosa)}
+.prot{display:flex;align-items:center;gap:12px;border:2px solid var(--rosa);background:#FFF5F8;border-radius:16px;padding:12px 14px;font-weight:800}
+.prot small{display:block;font-weight:500;color:var(--canela);font-size:13px}
+.prot i{font-style:normal;margin-left:auto;color:var(--rosa);font-size:18px}
+.outros{margin:24px 0 0;padding:16px 0 0;border-top:1px solid var(--rosaclaro)}
+.outros p{margin:0 0 10px;font-size:14px;font-weight:700;color:var(--canela)}
+.outros div{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.outros a{display:block;text-align:center;border:2px solid var(--rosaclaro);border-radius:14px;padding:12px 8px;font-weight:800;font-size:14px;color:var(--chocolate);text-decoration:none;line-height:1.25}
+.sh-top h2{margin:0;font-size:24px;font-weight:800;line-height:1.15}
+.x{border:0;background:var(--rosaclaro);width:38px;height:38px;border-radius:50%;font-size:22px;line-height:1;flex:none}
+.sub{margin:4px 0 0;color:var(--canela);font-size:14px}
+.passo{margin:22px 0 0}
+.passo h3{margin:0 0 10px;font-size:15px;font-weight:800}
+.passo h3 span{font-weight:500;color:var(--canela)}
+.opcoes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opcoes.lista{grid-template-columns:1fr}
+.op{border:2px solid var(--rosaclaro);background:var(--branco);border-radius:16px;padding:12px 14px;text-align:left;font-weight:700;line-height:1.25}
+.op small{display:block;font-weight:500;color:var(--canela);font-size:13px;margin-top:2px}
+.op[aria-pressed="true"]{border-color:var(--rosa);background:#FFF5F8}
+.op[disabled]{opacity:.4;cursor:not-allowed}
+.campo{display:block;margin:0 0 10px}
+.campo span{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+.campo input{width:100%;border:2px solid var(--rosaclaro);border-radius:14px;padding:12px 14px;font-size:16px;background:#fff}
+.campo input:focus{border-color:var(--rosa);outline:0}
+.aceite{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--canela);margin:6px 0 0}
+.aceite input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--rosa);flex:none}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 12px;font-weight:800;font-size:18px}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;border:0;border-radius:999px;padding:16px;font-weight:800;font-size:17px;background:var(--chocolate);color:#fff;text-decoration:none}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.sec{background:var(--rosaclaro);color:var(--chocolate);margin-top:10px}
+.btn.verde{background:var(--verde)}
+.erro{color:#B3261E;font-size:14px;font-weight:600;margin:10px 0 0}
+.aviso{background:#FFF7E6;border-radius:14px;padding:12px 14px;font-size:14px;margin:16px 0 0}
+.carregando{padding:40px 0;text-align:center;color:var(--canela)}
+.pix{text-align:center}
+.pix .qr{width:220px;height:220px;margin:18px auto 0;background:#fff;border:2px solid var(--rosaclaro);border-radius:18px;padding:10px;display:flex;align-items:center;justify-content:center}
+.pix .qr img,.pix .qr canvas{width:100%;height:100%;image-rendering:pixelated}
+.pix code{display:block;margin:14px 0 0;padding:12px;border-radius:12px;background:#F7F2F0;font-size:12px;word-break:break-all;text-align:left;max-height:84px;overflow:auto}
+.resumo{background:#F7F2F0;border-radius:16px;padding:14px;margin:16px 0 0;font-size:14px;text-align:left}
+.resumo b{display:block;font-size:15px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--chocolate);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:60;transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="lock"><img src="img/07e7c67fd8.webp" alt=""><div><p class="wm">Doçuras <span>da Deusa</span></p><p class="sl">Feito à mão na Várzea, Recife</p></div></div>
+    <h1>Oi! <b>O que você quer hoje?</b></h1>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="caminhos" aria-label="Escolha o que você quer">
+    <button type="button" class="cam" id="camAlmoco">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 21h30a15 15 0 0 1-30 0z"/><path d="M15 14c0-2.5 2.5-2.5 2.5-5M22.5 14c0-2.5 2.5-2.5 2.5-5"/></svg></span>
+      <span><b>Quero reservar um almoço</b><small id="almocoTxt">Prato do dia, P ou M, pago no Pix</small><span class="pill" id="almocoPill">Reserva até as 11h</span></span>
+      <span class="seta" aria-hidden="true">›</span>
+    </button>
+    <a class="cam" id="camFesta" href="index-final.html">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M8 20h24v13H8z"/><path d="M8 25c3 0 3 2 6 2s3-2 6-2 3 2 6 2 3-2 6-2"/><path d="M20 20v-5"/><path d="M20 15c-1.6 0-2.4-1.2-2.4-2.4 0-1.6 2.4-4.6 2.4-4.6s2.4 3 2.4 4.6c0 1.2-.8 2.4-2.4 2.4z"/><path d="M5 33h30"/></svg></span>
+      <span><b>Quero fazer uma encomenda para festa</b><small>Kits, bolos decorados, salgados e doces</small><span class="pill">Peça com 3 dias úteis</span></span>
+      <span class="seta" aria-hidden="true">›</span>
+    </a>
+    <a class="cam" id="camNatal" href="cardapio-festas.html">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 5l-8 10h4.5L9 25h6l-7 9h24l-7-9h6l-7.5-10H28z"/><path d="M20 34v3"/></svg></span>
+      <span><b>Quero ver o cardápio de Natal e Ano Novo</b><small>Ceia, combos e bolos temáticos</small><span class="pill">Retirada 23, 24, 30 e 31/12</span></span>
+      <span class="seta" aria-hidden="true">›</span>
+    </a>
+  </nav>
+
+  <a class="wa" id="waDireto" href="https://wa.me/5581996055239" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg>Prefiro falar no WhatsApp</a>
+  <p class="rodape">Retirada na Várzea, perto do Instituto Ricardo Brennand<br><a href="https://www.instagram.com/docurasdadeusaa/" target="_blank" rel="noopener">@docurasdadeusaa</a></p>
+</main>
+
+<div class="ov" id="almocoOv" role="dialog" aria-modal="true" aria-labelledby="almocoTit">
+  <div class="sheet" id="almocoSheet"></div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="js/qrcode.js"></script>
+<script>
+/* ===== Configuração ===== */
+const CONFIG = {
+  MOTOR: "https://script.google.com/macros/s/AKfycbzcn-MTm7UtwGh_I0M-3XkyhqQE3mYgvIUT1XtJCFS9Ge0v_BOgdLrj4Lac6O3RTfb2/exec",
+  EVENTOS: "https://script.google.com/macros/s/AKfycbyvdp6hWmXhuwvG_M0Rq7pjRxItGswQXScrRBO5Wri7uauZ-omdeB8KO2l_0EAqdGR_/exec",
+  WHATSAPP: "5581996055239"
+};
+
+/* ===== Utilidades ===== */
+const $ = s=>document.querySelector(s);
+const brl = v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc = s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store = {
+  get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800)}
+const soDig = s=>String(s||"").replace(/\D/g,"");
+function mascaraCel(v){const d=soDig(v).slice(0,11);if(d.length<3)return d;if(d.length<8)return "("+d.slice(0,2)+") "+d.slice(2);return "("+d.slice(0,2)+") "+d.slice(2,d.length-4)+" "+d.slice(-4)}
+
+/* ===== Origem e eventos (mesma aba eventos do cardápio) ===== */
+const qs = new URLSearchParams(location.search);
+let sid = store.get("dd_sid"); if(!sid){sid=Date.now().toString(36)+Math.random().toString(36).slice(2);store.set("dd_sid",sid)}
+let origem = store.get("dd_origem");
+if(qs.get("utm_source")||!origem){
+  const src=(qs.get("utm_source")||"").toLowerCase();
+  origem={utm_source:src==="ig"?"instagram":src,utm_medium:qs.get("utm_medium")||"",utm_campaign:qs.get("utm_campaign")||"",utm_content:qs.get("utm_content")||"",referrer:document.referrer||""};
+  store.set("dd_origem",origem);
+}
+if(qs.get("interno")==="1") store.set("dd_interno",true);
+const interno=!!store.get("dd_interno");
+function track(evento,dados={}){
+  if(!CONFIG.EVENTOS||qs.get("teste")==="1") return;
+  const p=Object.assign({evento,ts:new Date().toISOString(),session_id:sid,dispositivo:/Mobi|Android|iPhone/i.test(navigator.userAgent)?"mobile":"desktop",pagina:location.pathname},origem,dados,interno?{interno:true}:{});
+  fetch(CONFIG.EVENTOS,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(p)}).catch(()=>{});
+}
+/* leva a origem para as páginas de encomenda e Natal */
+const utm = new URLSearchParams({utm_source:origem.utm_source||"inicio",utm_medium:origem.utm_medium||"site",utm_campaign:origem.utm_campaign||"",utm_content:"inicio"});
+$("#camFesta").href="index-final.html?"+utm;
+$("#camNatal").href="cardapio-festas.html?"+utm;
+$("#camFesta").addEventListener("click",()=>track("inicio_caminho",{caminho:"encomenda"}));
+$("#camNatal").addEventListener("click",()=>track("inicio_caminho",{caminho:"natal"}));
+$("#waDireto").addEventListener("click",()=>track("whatsapp_direto",{origem:"inicio"}));
+track("acesso",{retorno:!!store.get("dd_visitou")}); store.set("dd_visitou",true);
+
+/* ===== Motor (Apps Script) ===== */
+async function motorGet(acao,params={}){
+  const u=CONFIG.MOTOR+"?"+new URLSearchParams(Object.assign({acao},params));
+  const r=await fetch(u); return r.json();
+}
+async function motorPost(acao,dados){
+  const r=await fetch(CONFIG.MOTOR,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(Object.assign({acao},dados))});
+  return r.json();
+}
+
+/* ===== Pix copia e cola (padrão BR Code do Banco Central) ===== */
+function crc16(s){let c=0xFFFF;for(let i=0;i<s.length;i++){c^=s.charCodeAt(i)<<8;for(let j=0;j<8;j++)c=(c&0x8000)?((c<<1)^0x1021)&0xFFFF:(c<<1)&0xFFFF}return c.toString(16).toUpperCase().padStart(4,"0")}
+const campo=(id,v)=>id+String(v.length).padStart(2,"0")+v;
+const semAcento=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9 ]/g,"").trim();
+/* e-mail e chave aleatória ficam como estão; celular precisa começar com +55; CNPJ e CPF viram só números */
+function chavePix(c){
+  c=String(c||"").trim();
+  if(/@/.test(c)) return c.toLowerCase();
+  if(/^[0-9a-f]{8}-[0-9a-f]{4}-/i.test(c)) return c.toLowerCase();
+  const d=c.replace(/\D/g,"");
+  if(/^\+/.test(c)) return "+"+d;
+  return d||c;
+}
+function pixPayload({chave,nome,cidade,valor,txid}){
+  chave=chavePix(chave);
+  const conta=campo("00","br.gov.bcb.pix")+campo("01",chave);
+  let p=campo("00","01")+campo("26",conta)+campo("52","0000")+campo("53","986");
+  if(valor) p+=campo("54",Number(valor).toFixed(2));
+  p+=campo("58","BR")+campo("59",semAcento(nome).slice(0,25)||"Docuras da Deusa")+campo("60",semAcento(cidade).slice(0,15)||"Recife");
+  p+=campo("62",campo("05",(semAcento(txid).replace(/ /g,"")||"***").slice(0,25)));
+  p+="6304"; return p+crc16(p);
+}
+function qrHTML(txt){
+  try{const q=qrcode(0,"M");q.addData(txt);q.make();return q.createImgTag(6,0,"QR Code do Pix")}catch(e){return ""}
+}
+
+/* ===== Almoço ===== */
+let AL=null;           // cardápio do dia vindo do motor
+let res={tamanho:"",acomps:[],nome:"",celular:"",lista:true};
+let enviando=false, feito=null;
+const cliente=store.get("dd_cliente_almoco");
+if(cliente){res.nome=cliente.nome||"";res.celular=cliente.celular||""}
+
+async function carregarAlmoco(){
+  try{
+    const j=await motorGet("site_almoco");
+    if(!j||!j.ok) throw new Error((j&&j.erro)||"sem dados");
+    /* uma proteína por dia: aceita "proteina" ou o primeiro item de "proteinas" */
+    if(!j.proteina&&j.proteinas&&j.proteinas.length) j.proteina=j.proteinas[0].nome||j.proteinas[0];
+    j.acompanhamentos=j.acompanhamentos||[];
+    AL=j;
+  }catch(e){ AL={ok:false,erro:String(e.message||e)} }
+  pintarCartaoAlmoco();
+  if($("#almocoOv").classList.contains("open")) renderAlmoco();
+}
+function pintarCartaoAlmoco(){
+  const p=$("#almocoPill"), t=$("#almocoTxt");
+  if(!AL||!AL.ok) return;
+  if(AL.aberto){
+    const dia=String(AL.dia_txt||"hoje").split(",")[0];
+    p.className="pill aberto";
+    p.textContent=AL.eh_hoje===false?"Reservas abertas para "+AL.dia_txt:"Reservas abertas até "+AL.limite_hora;
+    if(AL.proteina) t.textContent=dia.charAt(0).toUpperCase()+dia.slice(1)+": "+AL.proteina;
+  } else { p.className="pill"; p.textContent=AL.motivo||"Reservas fechadas hoje"; }
+}
+/* o almoço abre como uma página: o voltar do celular fecha e volta para a escolha */
+function abrirAlmoco(){
+  track("inicio_caminho",{caminho:"almoco"});
+  feito=null; $("#almocoOv").classList.add("open"); document.body.style.overflow="hidden"; renderAlmoco();
+  if(location.hash!=="#almoco") history.pushState({almoco:1},"","#almoco");
+}
+function fecharAlmoco(){
+  if(!$("#almocoOv").classList.contains("open")) return;
+  $("#almocoOv").classList.remove("open"); document.body.style.overflow="";
+  if(location.hash==="#almoco"){ if(history.state&&history.state.almoco) history.back(); else history.replaceState(null,"",location.pathname+location.search); }
+}
+window.addEventListener("popstate",()=>{ if(location.hash!=="#almoco"&&$("#almocoOv").classList.contains("open")){ $("#almocoOv").classList.remove("open"); document.body.style.overflow=""; } });
+$("#camAlmoco").addEventListener("click",abrirAlmoco);
+$("#almocoOv").addEventListener("click",e=>{ if(e.target.id==="almocoOv") fecharAlmoco(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") fecharAlmoco(); });
+
+const precoDe = t=>t==="P"?AL.preco_p:AL.preco_m;
+const valido = ()=>res.tamanho&&soDig(res.celular).length>=10&&res.nome.trim().length>1;
+const cabecalho = (tit,sub)=>`<div class="sh-nav"><button type="button" class="voltar" data-fechar>‹ Início</button><button type="button" class="x" data-fechar aria-label="Fechar">×</button></div><h2 id="almocoTit" style="margin:0;font-size:24px;font-weight:800;line-height:1.15">${tit}</h2>${sub?`<p class="sub">${sub}</p>`:""}`;
+const outrosHTML = ()=>`<div class="outros"><p>Quer aproveitar e ver mais?</p><div><a href="${$("#camFesta").href}" data-outro="encomenda">Encomenda para festa</a><a href="${$("#camNatal").href}" data-outro="natal">Natal e Ano Novo</a></div></div>`;
+const waLink = txt=>"https://wa.me/"+(soDig(AL&&AL.whatsapp)||CONFIG.WHATSAPP)+"?text="+encodeURIComponent(txt);
+
+function renderAlmoco(){
+  const S=$("#almocoSheet");
+  if(feito) return renderPix(S);
+  if(!AL){ S.innerHTML=cabecalho("Almoço do dia")+'<p class="carregando">Buscando o cardápio de hoje…</p>'; return; }
+  if(!AL.ok||!AL.aberto){
+    S.innerHTML=cabecalho("Almoço do dia")+`<p class="aviso">${esc(AL.ok?(AL.motivo||"As reservas de hoje estão fechadas."):"Não conseguimos abrir as reservas agora.")} Fale com a gente no WhatsApp que a Deusa responde.</p>
+      <a class="btn verde" style="margin-top:16px" href="${waLink("Oi! Quero saber do almoço de hoje.")}" target="_blank" rel="noopener">Chamar no WhatsApp</a>`+outrosHTML();
+    return;
+  }
+  const max=AL.max_acomp||3, cheio=res.acomps.length>=max;
+  const valor=res.tamanho?precoDe(res.tamanho):0;
+  S.innerHTML=cabecalho("Almoço de "+esc(AL.dia_txt||"hoje"),"Reserve até "+esc(AL.limite_hora)+". Retirada "+esc(AL.retirada||"")+".")+
+  `<div class="passo"><h3>1. Tamanho</h3><div class="opcoes">
+     <button type="button" class="op" data-tam="P" aria-pressed="${res.tamanho==="P"}">P <small>${esc(AL.peso_p)} · ${brl(AL.preco_p)}</small></button>
+     <button type="button" class="op" data-tam="M" aria-pressed="${res.tamanho==="M"}">M <small>${esc(AL.peso_m)} · ${brl(AL.preco_m)}</small></button>
+   </div></div>
+   <div class="passo"><h3>2. Proteína de hoje</h3>
+     <div class="prot">${esc(AL.proteina||"")}<i aria-hidden="true">✓</i></div>
+   </div>
+   ${AL.acompanhamentos.length?`<div class="passo"><h3>3. Acompanhamentos <span>escolha até ${max}</span></h3><div class="opcoes">
+     ${AL.acompanhamentos.map(a=>{const on=res.acomps.includes(a);return `<button type="button" class="op" data-acomp="${esc(a)}" aria-pressed="${on}" ${!on&&cheio?"disabled":""}>${esc(a)}</button>`}).join("")}
+   </div></div>`:""}
+   <div class="passo"><h3>${AL.acompanhamentos.length?4:3}. Seus dados</h3>
+     <label class="campo"><span>Nome</span><input id="alNome" autocomplete="name" value="${esc(res.nome)}" maxlength="60"></label>
+     <label class="campo"><span>Celular com DDD</span><input id="alCel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(81) 9 9999 9999" value="${esc(mascaraCel(res.celular))}"></label>
+     <label class="aceite"><input type="checkbox" id="alLista" ${res.lista?"checked":""}><span>Quero receber o cardápio do almoço pelo WhatsApp</span></label>
+   </div>
+   <div class="total"><span>Total</span><span>${valor?brl(valor):"escolha o tamanho"}</span></div>
+   <button type="button" class="btn" id="alReservar" ${valido()&&!enviando?"":"disabled"}>${enviando?"Reservando…":"Reservar e pagar no Pix"}</button>
+   <p class="erro" id="alErro" hidden></p>`+outrosHTML();
+}
+document.addEventListener("input",e=>{
+  if(e.target.id==="alNome"){res.nome=e.target.value;atualizaBotao()}
+  if(e.target.id==="alCel"){res.celular=soDig(e.target.value);e.target.value=mascaraCel(e.target.value);atualizaBotao()}
+  if(e.target.id==="alLista") res.lista=e.target.checked;
+});
+function atualizaBotao(){const b=$("#alReservar");if(b)b.disabled=!valido()||enviando}
+$("#almocoSheet").addEventListener("click",async e=>{
+  if(e.target.closest("[data-fechar]")) return fecharAlmoco();
+  const t=e.target.closest("[data-tam]"); if(t){res.tamanho=t.dataset.tam;return renderAlmoco()}
+  const o=e.target.closest("[data-outro]"); if(o){track("almoco_outro_caminho",{caminho:o.dataset.outro});return}
+  const a=e.target.closest("[data-acomp]"); if(a){const v=a.dataset.acomp,i=res.acomps.indexOf(v);if(i>=0)res.acomps.splice(i,1);else if(res.acomps.length<(AL.max_acomp||3))res.acomps.push(v);return renderAlmoco()}
+  if(e.target.closest("#alCopiar")) return copiarPix();
+  if(e.target.closest("#alNova")){feito=null;res.tamanho="";res.acomps=[];return renderAlmoco()}
+  if(e.target.closest("#alReservar")) return reservar();
+});
+async function reservar(){
+  if(!valido()||enviando) return;
+  enviando=true; renderAlmoco();
+  try{
+    const j=await motorPost("site_reserva_almoco",{
+      data:AL.data, tamanho:res.tamanho, proteina:AL.proteina, acompanhamentos:res.acomps,
+      nome:res.nome.trim(), celular:soDig(res.celular), aceite_lista:res.lista?"SIM":"NÃO",
+      origem:origem.utm_source||"site", session_id:sid
+    });
+    if(!j||!j.ok) throw new Error((j&&j.erro)||"Não deu para reservar agora.");
+    store.set("dd_cliente_almoco",{nome:res.nome.trim(),celular:soDig(res.celular)});
+    const valor=j.valor||precoDe(res.tamanho);
+    feito={codigo:j.codigo,valor,pix:j.pix||pixPayload({chave:AL.pix_chave,nome:AL.pix_nome,cidade:AL.pix_cidade,valor,txid:j.codigo})};
+    track("almoco_reserva",{codigo:j.codigo,tamanho:res.tamanho,valor});
+  }catch(err){
+    enviando=false; renderAlmoco(); const m=$("#alErro"); m.hidden=false; m.textContent=err.message||String(err); return;
+  }
+  enviando=false; renderAlmoco();
+}
+function renderPix(S){
+  const linhas=[res.tamanho+" ("+(res.tamanho==="P"?AL.peso_p:AL.peso_m)+")",AL.proteina].concat(res.acomps).join(" · ");
+  const msg="Oi! Paguei o Pix da reserva "+feito.codigo+" ("+brl(feito.valor)+"): "+linhas+". Nome: "+res.nome.trim()+".";
+  S.innerHTML=cabecalho("Reserva "+esc(feito.codigo))+
+  `<div class="pix">
+    <p class="sub">Pague ${brl(feito.valor)} no Pix para confirmar. A Deusa confere e separa o seu prato.</p>
+    <div class="qr">${qrHTML(feito.pix)}</div>
+    <code id="alPix">${esc(feito.pix)}</code>
+    <button type="button" class="btn" id="alCopiar" style="margin-top:12px">Copiar Pix copia e cola</button>
+    <a class="btn verde" style="margin-top:10px" href="${waLink(msg)}" target="_blank" rel="noopener">Mandar o comprovante no WhatsApp</a>
+    <div class="resumo"><b>${esc(linhas)}</b>Retirada ${esc(AL.retirada||"")} na Várzea.</div>
+    <button type="button" class="btn sec" id="alNova">Reservar outro prato</button>
+  </div>`+outrosHTML();
+}
+async function copiarPix(){
+  try{await navigator.clipboard.writeText(feito.pix);toast("Pix copiado")}
+  catch(e){const r=document.createRange();r.selectNodeContents($("#alPix"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("Toque e segure para copiar")}
+  track("almoco_pix_copiado",{codigo:feito.codigo});
+}
+
+/* abre direto no almoço com ?almoco ou #almoco (para usar na lista de transmissão) */
+if(qs.has("almoco")||location.hash==="#almoco") abrirAlmoco();
+carregarAlmoco();
+</script>
+</body>
+</html>
