@@ -281,19 +281,20 @@ function renderAlmoco(){
     return;
   }
   const max=AL.max_acomp||3, cheio=res.acomps.length>=max;
+  const unico=AL.preco_p===AL.preco_m; if(unico&&!res.tamanho) res.tamanho="P";
   const valor=res.tamanho?precoDe(res.tamanho):0;
   S.innerHTML=cabecalho("Almoço de "+esc(AL.dia_txt||"hoje"),"Reserve até "+esc(AL.limite_hora)+". Retirada "+esc(AL.retirada||"")+".")+
-  `<div class="passo"><h3>1. Tamanho</h3><div class="opcoes">
-     <button type="button" class="op" data-tam="P" aria-pressed="${res.tamanho==="P"}">P <small>${esc(AL.peso_p)} · ${brl(AL.preco_p)}</small></button>
-     <button type="button" class="op" data-tam="M" aria-pressed="${res.tamanho==="M"}">M <small>${esc(AL.peso_m)} · ${brl(AL.preco_m)}</small></button>
-   </div></div>
-   <div class="passo"><h3>2. Proteína de hoje</h3>
+  `${unico?`<div class="passo"><h3>${brl(AL.preco_p).replace(",00","")} · tamanho único</h3></div>`:`<div class="passo"><h3>1. Tamanho</h3><div class="opcoes">
+     <button type="button" class="op" data-tam="P" aria-pressed="${res.tamanho==="P"}">P <small>${brl(AL.preco_p)}</small></button>
+     <button type="button" class="op" data-tam="M" aria-pressed="${res.tamanho==="M"}">M <small>${brl(AL.preco_m)}</small></button>
+   </div></div>`}
+   <div class="passo"><h3>${unico?"1":"2"}. Proteína de hoje</h3>
      <div class="prot">${esc(AL.proteina||"")}<i aria-hidden="true">✓</i></div>
    </div>
-   ${AL.acompanhamentos.length?`<div class="passo"><h3>3. Acompanhamentos <span>escolha até ${max}</span></h3><div class="opcoes">
+   ${AL.acompanhamentos.length?`<div class="passo"><h3>${unico?"2":"3"}. Acompanhamentos <span>escolha até ${max}</span></h3><div class="opcoes lista">
      ${AL.acompanhamentos.map(a=>{const on=res.acomps.includes(a);return `<button type="button" class="op" data-acomp="${esc(a)}" aria-pressed="${on}" ${!on&&cheio?"disabled":""}>${esc(a)}</button>`}).join("")}
    </div></div>`:""}
-   <div class="passo"><h3>${AL.acompanhamentos.length?4:3}. Seus dados</h3>
+   <div class="passo"><h3>${(AL.acompanhamentos.length?4:3)-(unico?1:0)}. Seus dados</h3>
      <label class="campo"><span>Nome</span><input id="alNome" autocomplete="name" value="${esc(res.nome)}" maxlength="60"></label>
      <label class="campo"><span>Celular com DDD</span><input id="alCel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(81) 9 9999 9999" value="${esc(mascaraCel(res.celular))}"></label>
      <label class="aceite"><input type="checkbox" id="alLista" ${res.lista?"checked":""}><span>Quero receber o cardápio do almoço pelo WhatsApp</span></label>
@@ -337,7 +338,7 @@ async function reservar(){
   enviando=false; renderAlmoco();
 }
 function renderPix(S){
-  const linhas=[res.tamanho+" ("+(res.tamanho==="P"?AL.peso_p:AL.peso_m)+")",AL.proteina].concat(res.acomps).join(" · ");
+  const linhas=[AL.proteina].concat(res.acomps).join(" · ");
   const msg="Oi! Paguei o Pix da reserva "+feito.codigo+" ("+brl(feito.valor)+"): "+linhas+". Nome: "+res.nome.trim()+".";
   S.innerHTML=cabecalho("Reserva "+esc(feito.codigo))+
   `<div class="pix">
