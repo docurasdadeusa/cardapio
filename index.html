@@ -249,6 +249,8 @@ async function carregarAlmoco(){
     j.acompanhamentos=j.acompanhamentos||[];
     j.extras=(j.extras||[]).filter(x=>x&&x.nome&&Number(x.preco)>0);
     j.formas=(j.formas&&j.formas.length)?j.formas:[{id:"pix",nome:"Pix agora"}];
+    /* na loja o pagamento é antes, para confirmar a reserva */
+    j.formas.forEach(f=>{if(f.id==="loja")f.nome="Pagar na loja antes, para confirmar"});
     /* tira da escolha o que saiu do cardápio do dia */
     Object.keys(res.extras).forEach(n=>{if(!j.extras.some(x=>x.nome===n))delete res.extras[n]});
     if(!j.formas.some(f=>f.id===res.forma)) res.forma=j.formas[0].id;
@@ -387,10 +389,10 @@ function renderPix(S){
   if(feito.forma&&feito.forma!=="pix"){
     const cartao=feito.forma==="cartao";
     const msgC=cartao?"Oi! Fiz a reserva "+feito.codigo+" ("+brl(feito.valor)+") e quero pagar no cartão. Pode me mandar o link? Nome: "+res.nome.trim()+"."
-                     :"Oi! Fiz a reserva "+feito.codigo+" ("+brl(feito.valor)+") e vou pagar na loja. Nome: "+res.nome.trim()+".";
+                     :"Oi! Fiz a reserva "+feito.codigo+" ("+brl(feito.valor)+") e vou passar na loja para pagar. Nome: "+res.nome.trim()+".";
     S.innerHTML=cabecalho("Reserva "+esc(feito.codigo))+
     `<div class="pix">
-      <p class="sub">${cartao?"Prato reservado! Vamos te mandar o link do cartão no WhatsApp. Se preferir, chame a gente agora.":"Prato reservado! Você paga "+brl(feito.valor)+" na loja, na hora da retirada."}</p>
+      <p class="sub">${cartao?"Prato reservado! Vamos te mandar o link do cartão no WhatsApp. Se preferir, chame a gente agora.":"Falta pouco! Passe na loja e pague "+brl(feito.valor)+" antes das "+esc(AL.limite_hora)+" para confirmar. A reserva só vale depois do pagamento."}</p>
       <a class="btn verde" style="margin-top:16px" href="${waLink(msgC)}" target="_blank" rel="noopener">${cartao?"Pedir o link no WhatsApp":"Avisar no WhatsApp"}</a>
       <div class="resumo"><b>${esc(linhas)}</b>Total ${brl(feito.valor)}. Retirada ${esc(AL.retirada||"")} na Várzea.</div>
       <button type="button" class="btn sec" id="alNova">Reservar outro prato</button>
