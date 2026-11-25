@@ -97,6 +97,19 @@ button{cursor:pointer}
 .pix code{display:block;margin:14px 0 0;padding:12px;border-radius:12px;background:#F7F2F0;font-size:12px;word-break:break-all;text-align:left;max-height:84px;overflow:auto}
 .resumo{background:#F7F2F0;border-radius:16px;padding:14px;margin:16px 0 0;font-size:14px;text-align:left}
 .resumo b{display:block;font-size:15px}
+.extra{display:flex;align-items:center;gap:10px;border:2px solid var(--rosaclaro);border-radius:16px;padding:10px 12px 10px 14px;font-weight:700;line-height:1.25}
+.extra.on{border-color:var(--rosa);background:#FFF5F8}
+.extra span{flex:1}
+.extra small{display:block;font-weight:600;color:var(--canela);font-size:13px;margin-top:2px;font-variant-numeric:lining-nums}
+.qtd{display:flex;align-items:center;gap:8px;flex:none}
+.qtd button{width:36px;height:36px;border-radius:50%;border:0;background:var(--rosaclaro);color:var(--chocolate);font-size:20px;font-weight:800;line-height:1}
+.qtd button.mais{background:var(--chocolate);color:#fff}
+.qtd button[disabled]{opacity:.35}
+.qtd b{min-width:16px;text-align:center;font-size:16px}
+.grupo{margin:14px 0 6px;font-size:13px;font-weight:800;color:var(--rosa);text-transform:uppercase;letter-spacing:.5px}
+.grupo:first-child{margin-top:0}
+.extras{display:grid;gap:8px}
+.total small{display:block;font-size:13px;font-weight:600;color:var(--canela);text-align:right}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;background:var(--chocolate);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:60;transition:.25s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 </style>
@@ -114,7 +127,7 @@ button{cursor:pointer}
   <nav class="caminhos" aria-label="Escolha o que você quer">
     <button type="button" class="cam" id="camAlmoco">
       <span class="ic" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M5 21h30a15 15 0 0 1-30 0z"/><path d="M15 14c0-2.5 2.5-2.5 2.5-5M22.5 14c0-2.5 2.5-2.5 2.5-5"/></svg></span>
-      <span><b>Quero reservar um almoço</b><small id="almocoTxt">Prato do dia, P ou M, pago no Pix</small><span class="pill" id="almocoPill">Reserva até as 11h</span></span>
+      <span><b>Quero reservar um almoço</b><small id="almocoTxt">Prato do dia, com bebida e bolo na fatia</small><span class="pill" id="almocoPill">Reserva até as 11h</span></span>
       <span class="seta" aria-hidden="true">›</span>
     </button>
     <a class="cam" id="camFesta" href="index-final.html">
@@ -222,7 +235,7 @@ function qrHTML(txt){
 
 /* ===== Almoço ===== */
 let AL=null;           // cardápio do dia vindo do motor
-let res={tamanho:"",acomps:[],nome:"",celular:"",lista:true};
+let res={tamanho:"",acomps:[],nome:"",celular:"",lista:true,extras:{},forma:"pix"};
 let enviando=false, feito=null;
 const cliente=store.get("dd_cliente_almoco");
 if(cliente){res.nome=cliente.nome||"";res.celular=cliente.celular||""}
@@ -234,6 +247,11 @@ async function carregarAlmoco(){
     /* uma proteína por dia: aceita "proteina" ou o primeiro item de "proteinas" */
     if(!j.proteina&&j.proteinas&&j.proteinas.length) j.proteina=j.proteinas[0].nome||j.proteinas[0];
     j.acompanhamentos=j.acompanhamentos||[];
+    j.extras=(j.extras||[]).filter(x=>x&&x.nome&&Number(x.preco)>0);
+    j.formas=(j.formas&&j.formas.length)?j.formas:[{id:"pix",nome:"Pix agora"}];
+    /* tira da escolha o que saiu do cardápio do dia */
+    Object.keys(res.extras).forEach(n=>{if(!j.extras.some(x=>x.nome===n))delete res.extras[n]});
+    if(!j.formas.some(f=>f.id===res.forma)) res.forma=j.formas[0].id;
     AL=j;
   }catch(e){ AL={ok:false,erro:String(e.message||e)} }
   pintarCartaoAlmoco();
@@ -271,6 +289,24 @@ const cabecalho = (tit,sub)=>`<div class="sh-nav"><button type="button" class="v
 const outrosHTML = ()=>`<div class="outros"><p>Quer aproveitar e ver mais?</p><div><a href="${$("#camFesta").href}" data-outro="encomenda">Encomenda para festa</a><a href="${$("#camNatal").href}" data-outro="natal">Natal e Ano Novo</a></div></div>`;
 const waLink = txt=>"https://wa.me/"+(soDig(AL&&AL.whatsapp)||CONFIG.WHATSAPP)+"?text="+encodeURIComponent(txt);
 
+const MAX_EXTRA=10;
+const extrasEscolhidos=()=>(AL&&AL.extras||[]).filter(x=>res.extras[x.nome]>0).map(x=>({nome:x.nome,qtd:res.extras[x.nome],preco:Number(x.preco)}));
+const valorExtras=()=>extrasEscolhidos().reduce((s,x)=>s+x.qtd*x.preco,0);
+/* separa bebidas e sobremesas pelo nome, só para organizar a lista */
+const ehBebida=n=>/coca|antarctica|guaran|refri|suco|[aá]gua|lata|garrafa|fanta|sprite|pepsi/i.test(n);
+const TXT_FORMA={pix:"Reservar e pagar no Pix",cartao:"Reservar e receber o link do cartão",loja:"Reservar e pagar na loja"};
+function extraHTML(x){
+  const q=res.extras[x.nome]||0;
+  return `<div class="extra ${q?"on":""}"><span>${esc(x.nome)}<small>${brl(Number(x.preco))}</small></span>
+    <div class="qtd">${q?`<button type="button" data-menos="${esc(x.nome)}" aria-label="Tirar ${esc(x.nome)}">−</button><b>${q}</b>`:""}
+    <button type="button" class="mais" data-mais="${esc(x.nome)}" aria-label="Adicionar ${esc(x.nome)}" ${q>=MAX_EXTRA?"disabled":""}>+</button></div></div>`;
+}
+function extrasHTML(){
+  const beb=AL.extras.filter(x=>ehBebida(x.nome)), sob=AL.extras.filter(x=>!ehBebida(x.nome));
+  const bloco=(tit,l)=>l.length?`<p class="grupo">${tit}</p><div class="extras">${l.map(extraHTML).join("")}</div>`:"";
+  return (beb.length&&sob.length)?bloco("Bebidas",beb)+bloco("Sobremesas",sob):`<div class="extras">${AL.extras.map(extraHTML).join("")}</div>`;
+}
+
 function renderAlmoco(){
   const S=$("#almocoSheet");
   if(feito) return renderPix(S);
@@ -282,25 +318,30 @@ function renderAlmoco(){
   }
   const max=AL.max_acomp||3, cheio=res.acomps.length>=max;
   const unico=AL.preco_p===AL.preco_m; if(unico&&!res.tamanho) res.tamanho="P";
-  const valor=res.tamanho?precoDe(res.tamanho):0;
+  const prato=res.tamanho?precoDe(res.tamanho):0, vEx=valorExtras(), valor=prato+vEx;
+  let n=0; const num=()=>++n+". ";
   S.innerHTML=cabecalho("Almoço de "+esc(AL.dia_txt||"hoje"),"Reserve até "+esc(AL.limite_hora)+". Retirada "+esc(AL.retirada||"")+".")+
-  `${unico?`<div class="passo"><h3>${brl(AL.preco_p).replace(",00","")} · tamanho único</h3></div>`:`<div class="passo"><h3>1. Tamanho</h3><div class="opcoes">
+  `${unico?`<div class="passo"><h3>${brl(AL.preco_p).replace(",00","")} · tamanho único</h3></div>`:`<div class="passo"><h3>${num()}Tamanho</h3><div class="opcoes">
      <button type="button" class="op" data-tam="P" aria-pressed="${res.tamanho==="P"}">P <small>${brl(AL.preco_p)}</small></button>
      <button type="button" class="op" data-tam="M" aria-pressed="${res.tamanho==="M"}">M <small>${brl(AL.preco_m)}</small></button>
    </div></div>`}
-   <div class="passo"><h3>${unico?"1":"2"}. Proteína de hoje</h3>
+   <div class="passo"><h3>${num()}Proteína de hoje</h3>
      <div class="prot">${esc(AL.proteina||"")}<i aria-hidden="true">✓</i></div>
    </div>
-   ${AL.acompanhamentos.length?`<div class="passo"><h3>${unico?"2":"3"}. Acompanhamentos <span>escolha até ${max}</span></h3><div class="opcoes lista">
+   ${AL.acompanhamentos.length?`<div class="passo"><h3>${num()}Acompanhamentos <span>escolha até ${max}</span></h3><div class="opcoes lista">
      ${AL.acompanhamentos.map(a=>{const on=res.acomps.includes(a);return `<button type="button" class="op" data-acomp="${esc(a)}" aria-pressed="${on}" ${!on&&cheio?"disabled":""}>${esc(a)}</button>`}).join("")}
    </div></div>`:""}
-   <div class="passo"><h3>${(AL.acompanhamentos.length?4:3)-(unico?1:0)}. Seus dados</h3>
+   ${AL.extras.length?`<div class="passo"><h3>${num()}Complete seu almoço <span>opcional</span></h3>${extrasHTML()}</div>`:""}
+   ${AL.formas.length>1?`<div class="passo"><h3>${num()}Como quer pagar</h3><div class="opcoes lista">
+     ${AL.formas.map(f=>`<button type="button" class="op" data-forma="${esc(f.id)}" aria-pressed="${res.forma===f.id}">${esc(f.nome)}</button>`).join("")}
+   </div></div>`:""}
+   <div class="passo"><h3>${num()}Seus dados</h3>
      <label class="campo"><span>Nome</span><input id="alNome" autocomplete="name" value="${esc(res.nome)}" maxlength="60"></label>
      <label class="campo"><span>Celular com DDD</span><input id="alCel" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(81) 9 9999 9999" value="${esc(mascaraCel(res.celular))}"></label>
      <label class="aceite"><input type="checkbox" id="alLista" ${res.lista?"checked":""}><span>Quero receber o cardápio do almoço pelo WhatsApp</span></label>
    </div>
-   <div class="total"><span>Total</span><span>${valor?brl(valor):"escolha o tamanho"}</span></div>
-   <button type="button" class="btn" id="alReservar" ${valido()&&!enviando?"":"disabled"}>${enviando?"Reservando…":"Reservar e pagar no Pix"}</button>
+   <div class="total"><span>Total</span><span>${prato?brl(valor):"escolha o tamanho"}${prato&&vEx?`<small>prato ${brl(prato)} + extras ${brl(vEx)}</small>`:""}</span></div>
+   <button type="button" class="btn" id="alReservar" ${valido()&&!enviando?"":"disabled"}>${enviando?"Reservando…":(TXT_FORMA[res.forma]||TXT_FORMA.pix)}</button>
    <p class="erro" id="alErro" hidden></p>`+outrosHTML();
 }
 document.addEventListener("input",e=>{
@@ -314,8 +355,11 @@ $("#almocoSheet").addEventListener("click",async e=>{
   const t=e.target.closest("[data-tam]"); if(t){res.tamanho=t.dataset.tam;return renderAlmoco()}
   const o=e.target.closest("[data-outro]"); if(o){track("almoco_outro_caminho",{caminho:o.dataset.outro});return}
   const a=e.target.closest("[data-acomp]"); if(a){const v=a.dataset.acomp,i=res.acomps.indexOf(v);if(i>=0)res.acomps.splice(i,1);else if(res.acomps.length<(AL.max_acomp||3))res.acomps.push(v);return renderAlmoco()}
+  const mais=e.target.closest("[data-mais]"); if(mais){const k=mais.dataset.mais;res.extras[k]=Math.min(MAX_EXTRA,(res.extras[k]||0)+1);if(res.extras[k]===1)track("almoco_extra",{item:k});return renderAlmoco()}
+  const menos=e.target.closest("[data-menos]"); if(menos){const k=menos.dataset.menos;res.extras[k]=Math.max(0,(res.extras[k]||0)-1);if(!res.extras[k])delete res.extras[k];return renderAlmoco()}
+  const fo=e.target.closest("[data-forma]"); if(fo){res.forma=fo.dataset.forma;return renderAlmoco()}
   if(e.target.closest("#alCopiar")) return copiarPix();
-  if(e.target.closest("#alNova")){feito=null;res.tamanho="";res.acomps=[];return renderAlmoco()}
+  if(e.target.closest("#alNova")){feito=null;res.tamanho="";res.acomps=[];res.extras={};return renderAlmoco()}
   if(e.target.closest("#alReservar")) return reservar();
 });
 async function reservar(){
@@ -325,20 +369,34 @@ async function reservar(){
     const j=await motorPost("site_reserva_almoco",{
       data:AL.data, tamanho:res.tamanho, proteina:AL.proteina, acompanhamentos:res.acomps,
       nome:res.nome.trim(), celular:soDig(res.celular), aceite_lista:res.lista?"SIM":"NÃO",
+      extras:extrasEscolhidos().map(x=>({nome:x.nome,qtd:x.qtd})), forma:res.forma,
       origem:origem.utm_source||"site", session_id:sid
     });
     if(!j||!j.ok) throw new Error((j&&j.erro)||"Não deu para reservar agora.");
     store.set("dd_cliente_almoco",{nome:res.nome.trim(),celular:soDig(res.celular)});
-    const valor=j.valor||precoDe(res.tamanho);
-    feito={codigo:j.codigo,valor,pix:j.pix||pixPayload({chave:AL.pix_chave,nome:AL.pix_nome,cidade:AL.pix_cidade,valor,txid:j.codigo})};
-    track("almoco_reserva",{codigo:j.codigo,tamanho:res.tamanho,valor});
+    const valor=j.valor||(precoDe(res.tamanho)+valorExtras());
+    feito={codigo:j.codigo,valor,forma:res.forma,extras:extrasEscolhidos(),pix:j.pix||pixPayload({chave:AL.pix_chave,nome:AL.pix_nome,cidade:AL.pix_cidade,valor,txid:j.codigo})};
+    track("almoco_reserva",{codigo:j.codigo,tamanho:res.tamanho,valor,forma:res.forma,extras:feito.extras.length});
   }catch(err){
     enviando=false; renderAlmoco(); const m=$("#alErro"); m.hidden=false; m.textContent=err.message||String(err); return;
   }
   enviando=false; renderAlmoco();
 }
 function renderPix(S){
-  const linhas=[AL.proteina].concat(res.acomps).join(" · ");
+  const linhas=[AL.proteina].concat(res.acomps).concat((feito.extras||[]).map(x=>x.qtd+"x "+x.nome)).join(" · ");
+  if(feito.forma&&feito.forma!=="pix"){
+    const cartao=feito.forma==="cartao";
+    const msgC=cartao?"Oi! Fiz a reserva "+feito.codigo+" ("+brl(feito.valor)+") e quero pagar no cartão. Pode me mandar o link? Nome: "+res.nome.trim()+"."
+                     :"Oi! Fiz a reserva "+feito.codigo+" ("+brl(feito.valor)+") e vou pagar na loja. Nome: "+res.nome.trim()+".";
+    S.innerHTML=cabecalho("Reserva "+esc(feito.codigo))+
+    `<div class="pix">
+      <p class="sub">${cartao?"Prato reservado! Vamos te mandar o link do cartão no WhatsApp. Se preferir, chame a gente agora.":"Prato reservado! Você paga "+brl(feito.valor)+" na loja, na hora da retirada."}</p>
+      <a class="btn verde" style="margin-top:16px" href="${waLink(msgC)}" target="_blank" rel="noopener">${cartao?"Pedir o link no WhatsApp":"Avisar no WhatsApp"}</a>
+      <div class="resumo"><b>${esc(linhas)}</b>Total ${brl(feito.valor)}. Retirada ${esc(AL.retirada||"")} na Várzea.</div>
+      <button type="button" class="btn sec" id="alNova">Reservar outro prato</button>
+    </div>`+outrosHTML();
+    return;
+  }
   const msg="Oi! Paguei o Pix da reserva "+feito.codigo+" ("+brl(feito.valor)+"): "+linhas+". Nome: "+res.nome.trim()+".";
   S.innerHTML=cabecalho("Reserva "+esc(feito.codigo))+
   `<div class="pix">
